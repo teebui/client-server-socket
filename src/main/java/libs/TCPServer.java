@@ -6,18 +6,29 @@ import java.net.Socket;
 
 public class TCPServer {
     private static final int PORT_NUMBER = 50000;
+    private ServerSocket serverSocket;
 
     public void start() {
-        ServerSocket serverSocket;
         System.out.println("Server running on port " + PORT_NUMBER);
         try {
             serverSocket = new ServerSocket(PORT_NUMBER);
             Socket clientSocket = serverSocket.accept();
-            ClientSocketHandler clientSocketHandler = new ClientSocketHandler(clientSocket);
-            clientSocketHandler.handle();
+            while (true) {
+                final ClientSocketHandler handler = new ClientSocketHandler(clientSocket);
+                handler.run();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            stop();
+        }
+    }
+
+    private void stop() {
+        try {
+            serverSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }

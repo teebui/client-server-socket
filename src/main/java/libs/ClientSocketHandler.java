@@ -2,14 +2,15 @@ package libs;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-import java.util.concurrent.Executors;
 
-import static java.lang.String.*;
+import static java.lang.String.format;
 
 public class ClientSocketHandler {
     public static final String HI_I_M = "HI, I'M ";
+    public static final String HI = "HI %s";
+    public static final String SERVER_BYE = "BYE %s, WE SPOKE FOR %d MS";
+    public static final String CLIENT_BYE = "BYE MATE!";
+    public static final String SERVER_UNKNOWN_REQUEST = "SORRY, I DIDN'T UNDERSTAND THAT";
 
     private Socket clientSocket;
     private Session session;
@@ -18,20 +19,16 @@ public class ClientSocketHandler {
     public ClientSocketHandler(Socket clientSkt) {
         clientSocket = clientSkt;
         session = new Session();
-
     }
 
-    public void handle() {
+    public void run() {
         System.out.println("Start handling client with session ID " + session.getSessionID());
         PrintWriter out = null;
         BufferedReader in;
         String request, response;
+
         try {
             clientSocket.setSoTimeout(30000);
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
-        try {
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             String connectionStartText = format("HI, I'M %s", session.getSessionID());
@@ -44,9 +41,6 @@ public class ClientSocketHandler {
                 System.out.println("S: " + response);
                 out.println(response);
             }
-        } catch (SocketTimeoutException e) {
-            session.terminate();
-            out.println(format("BYE %s, WE SPOKE FOR %d MS", session.getClientName(), session.getDuration()));
         } catch (InterruptedIOException e) {
             session.terminate();
             out.println(format("BYE %s, WE SPOKE FOR %d MS", session.getClientName(), session.getDuration()));
@@ -63,13 +57,13 @@ public class ClientSocketHandler {
         if (request.startsWith(HI_I_M)) {
             final String clientID = request.replace(HI_I_M, "");
             session.setClientName(clientID);
-
-            return format("HI %s", clientID);
-        } else if (request.equals("BYE MATE!")) {
+            return format(HI, clientID);
+        } else if (request.equals(CLIENT_BYE)) {
             session.terminate();
-            return format("BYE %s, WE SPOKE FOR %d MS", session.getClientName(), session.getDuration());
+            return format(SERVER_BYE, session.getClientName(), session.getDuration());
         }
 
-        return "SORRY, I DIDN'T UNDERSTAND THAT";
+        return SERVER_UNKNOWN_REQUEST;
     }
+
 }
