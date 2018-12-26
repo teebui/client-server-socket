@@ -1,60 +1,73 @@
 package libs;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InterruptedIOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 
-import static java.lang.String.format;
 import static libs.CommunicationManager.*;
 
 public class ClientSocketHandler implements Runnable {
 
+    private static final int CLIENT_TIMEOUT = 30000;
     private final Socket clientSocket;
     private final Session session;
     private final Graph graph;
+    private PrintWriter out;
+    private BufferedReader in;
 
-
-    public ClientSocketHandler(final Socket clientSkt, final Graph aGraph) {
-        clientSocket = clientSkt;
+    public ClientSocketHandler(final Socket clientSkt, final Graph aGraph) throws IOException {
         session = new Session();
         graph = aGraph;
+        clientSocket = clientSkt;
+        initializeClientSocket();
     }
 
-
     public void run() {
-        System.out.println("Start handling client with session ID " + session.getSessionID());
-        PrintWriter out = null;
-        BufferedReader in = null;
+        sendResponse(getServerGreeting(session));
+        System.out.println("S: " + getServerGreeting(session));
+
         String command, response;
-
         try {
-            clientSocket.setSoTimeout(30000);
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            out = new PrintWriter(clientSocket.getOutputStream(), true);
-            out.println(format("HI, I'M %s", session.getSessionID()));
-            System.out.println("S: " + format("HI, I'M %s", session.getSessionID()));
-
             while ((command = in.readLine()) != null) {
                 System.out.println("C: " + command);
                 response = getResponse(command, session, graph);
                 System.out.println("S: " + response);
-                out.println(response);
+                sendResponse(response);
 
-                if (command.equals(clientSaysGoodBye())) {
+                if (clientSaysGoodBye(command)) {
                     return;
                 }
             }
         } catch (InterruptedIOException e) {
             session.terminate();
-            out.println(format(serverSaysGoodBye(), session.getClientName(), session.getDuration()));
+            sendResponse(getServerGoodbye(session));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            terminateClient();
+        }
+    }
+
+    private void terminateClient() {
+        try {
+            clientSocket.close();
+            in.close();
+            out.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-//
-//        try {
-//            in.close();
-//            out.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+    }
+
+    private void sendResponse(final String response) {
+        out.println(response);
+    }
+
+    private void initializeClientSocket() throws IOException {
+        clientSocket.setSoTimeout(CLIENT_TIMEOUT);
+        in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        out = new PrintWriter(clientSocket.getOutputStream(), true);
     }
 }
