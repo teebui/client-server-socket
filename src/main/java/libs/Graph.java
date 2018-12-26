@@ -2,6 +2,7 @@ package libs;
 
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.interfaces.ShortestPathAlgorithm.SingleSourcePaths;
+import org.jgrapht.alg.shortestpath.BellmanFordShortestPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.DirectedWeightedPseudograph;
@@ -65,7 +66,7 @@ public class Graph {
 
         assertNodeExists(node);
 
-        SingleSourcePaths<String, DefaultWeightedEdge> paths = new DijkstraShortestPath<>(graph).getPaths(node);
+        SingleSourcePaths<String, DefaultWeightedEdge> paths = new BellmanFordShortestPath<>(graph).getPaths(node);
 
         return paths
                 .getGraph()
