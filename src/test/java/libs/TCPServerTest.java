@@ -237,7 +237,6 @@ public class TCPServerTest {
         out.println("ADD NODE D");
         in.readLine();
 
-        //  Act
         out.println("ADD EDGE A B 1");
         in.readLine();
         out.println("ADD EDGE A C 2");
@@ -249,8 +248,41 @@ public class TCPServerTest {
         out.println("ADD EDGE A D 7");
         in.readLine();
 
-        // Assert
+        //  Act
         out.println("SHORTEST PATH A D");
+
+        // Assert
         assertEquals("2", in.readLine());
+    }
+    @Test
+    public void closerThan_NodesReturned() throws IOException {
+        // Arrange
+        in.readLine();
+
+        out.println("ADD NODE Mark");
+        in.readLine();
+
+        out.println("ADD NODE Michael");
+        in.readLine();
+
+        out.println("ADD NODE Madeleine");
+        in.readLine();
+
+        out.println("ADD NODE Mufasa");
+        in.readLine();
+
+        out.println("ADD EDGE Mark Michael 5");
+        in.readLine();
+        out.println("ADD EDGE Michael Madeleine 2");
+        in.readLine();
+        out.println("ADD EDGE Madeleine Mufasa 8");
+        in.readLine();
+
+
+        //  Act
+        out.println("CLOSER THAN 8 Mark");
+
+        // Assert
+        assertEquals("Madeleine,Michael", in.readLine());
     }
 }

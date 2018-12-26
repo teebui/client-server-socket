@@ -2,6 +2,7 @@ package libs;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
 
 import static java.lang.String.format;
 
@@ -22,6 +23,7 @@ public class ClientSocketHandler implements Runnable {
     public static final String CMD_REMOVE_NODE = "REMOVE NODE ";
     public static final String RSP_NODE_REMOVED = "NODE REMOVED";
     public static final String CMD_SHORTEST_PATH = "SHORTEST PATH ";
+    public static final String CMD_CLOSER_THAN = "CLOSER THAN ";
 
     private final Socket clientSocket;
     private final Session session;
@@ -71,8 +73,6 @@ public class ClientSocketHandler implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     private String getResponse(final String command) {
@@ -133,6 +133,18 @@ public class ClientSocketHandler implements Runnable {
             }
 
             return format("%d", shortestPath);
+
+        } else if (command.startsWith(CMD_CLOSER_THAN)) {
+            String nodes = command.replace(CMD_CLOSER_THAN, "");
+            String[] s = nodes.split(" ");
+            String closerNodes;
+            try {
+                closerNodes = graph.findNodesCloserThan(Integer.parseInt(s[0]), s[1]);
+            } catch (NodeNotFoundException e) {
+                return ERROR_NODE_NOT_FOUND;
+            }
+
+            return closerNodes;
 
         }
 
