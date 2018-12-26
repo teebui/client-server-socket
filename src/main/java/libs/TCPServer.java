@@ -6,10 +6,9 @@ import java.net.ServerSocket;
 public class TCPServer {
     private static final int PORT_NUMBER = 50000;
     private ServerSocket serverSocket;
-    private Graph graph;
 
     public void start() {
-        graph = new Graph();
+        Graph graph = new Graph();
         System.out.println("Server running on port " + PORT_NUMBER);
         try {
             serverSocket = new ServerSocket(PORT_NUMBER);
