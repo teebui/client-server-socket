@@ -5,7 +5,7 @@ import java.net.Socket;
 
 import static java.lang.String.format;
 
-public class ClientSocketHandler extends Thread {
+public class ClientSocketHandler implements Runnable {
     public static final String HI_I_M = "HI, I'M ";
     public static final String HI = "HI %s";
     public static final String SERVER_BYE = "BYE %s, WE SPOKE FOR %d MS";
@@ -19,32 +19,33 @@ public class ClientSocketHandler extends Thread {
     public static final String CMD_ADD_NODE = "ADD NODE ";
     public static final String CMD_ADD_EDGE = "ADD EDGE ";
     public static final String RSP_EDGE_ADDED = "EDGE ADDED";
+    public static final String CMD_REMOVE_NODE = "REMOVE NODE ";
+    public static final String RSP_NODE_REMOVED = "NODE REMOVED";
 
-    private Socket clientSocket;
-    private Session session;
-    private MyGraph graph;
+    private final Socket clientSocket;
+    private final Session session;
+    private final MyGraph graph;
 
-    public ClientSocketHandler(final Socket clientSkt) {
+
+    public ClientSocketHandler(final Socket clientSkt, MyGraph gr) {
         clientSocket = clientSkt;
         session = new Session();
-        graph = new MyGraph();
+        graph = gr;
     }
 
-    @Override
+
     public void run() {
         System.out.println("Start handling client with session ID " + session.getSessionID());
         PrintWriter out = null;
-        BufferedReader in;
+        BufferedReader in = null;
         String request, response;
 
         try {
             clientSocket.setSoTimeout(30000);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             out = new PrintWriter(clientSocket.getOutputStream(), true);
-            String connectionStartText = format("HI, I'M %s", session.getSessionID());
-
-            out.println(connectionStartText);
-            System.out.println("S: " + connectionStartText);
+            out.println(format("HI, I'M %s", session.getSessionID()));
+            System.out.println("S: " + format("HI, I'M %s", session.getSessionID()));
 
             while ((request = in.readLine()) != null) {
                 System.out.println("C: " + request);
@@ -61,11 +62,16 @@ public class ClientSocketHandler extends Thread {
             out.println(format(SERVER_BYE, session.getClientName(), session.getDuration()));
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (out != null) {
-                out.close();
-            }
         }
+
+        try {
+            in.close();
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     private String getResponse(final String command) {
@@ -77,7 +83,7 @@ public class ClientSocketHandler extends Thread {
             session.terminate();
             return format(SERVER_BYE, session.getClientName(), session.getDuration());
         } else if (command.startsWith(CMD_ADD_NODE)) {
-            String nodeName = command.replace("ADD NODE ", "");
+            String nodeName = command.replace(CMD_ADD_NODE, "");
             try {
                 graph.addNode(nodeName);
             } catch (NodeAlreadyExistsException e) {
@@ -96,6 +102,15 @@ public class ClientSocketHandler extends Thread {
             }
 
             return RSP_EDGE_ADDED;
+        } else if (command.startsWith(CMD_REMOVE_NODE)) {
+            String node = command.replace(CMD_REMOVE_NODE, "");
+            try {
+                graph.removeNode(node);
+            } catch (NodeNotFoundException e) {
+                return ERROR_NODE_NOT_FOUND;
+            }
+
+            return RSP_NODE_REMOVED;
         } else if (command.startsWith(CMD_REMOVE_EDGE)) {
             String edge = command.replace(CMD_REMOVE_EDGE, "");
             String[] s = edge.split(" ");
