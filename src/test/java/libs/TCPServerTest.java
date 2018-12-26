@@ -21,6 +21,7 @@ public class TCPServerTest {
     private static Socket clientSocket;
     private static BufferedReader in;
     private static PrintWriter out;
+    private static long startTime;
 
     @Before
     public void setUp() throws IOException, InterruptedException {
@@ -28,6 +29,7 @@ public class TCPServerTest {
 //        tcpServer.start();
 //        Thread.sleep(2000);
         System.out.println("Connect now to the server...");
+        startTime = System.currentTimeMillis();
         clientSocket = new Socket(HOST, PORT_NUMBER);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         out = new PrintWriter(clientSocket.getOutputStream(), true);
@@ -42,35 +44,33 @@ public class TCPServerTest {
     @Test
     public void sayHiToServer() throws IOException {
         // Arrange
-        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-        UUID clientUUID = UUID.randomUUID();
-        String sayHi = format("HI, I'M %s", clientUUID);
+        in.readLine();
 
         // Act
-        out.println(sayHi);
+        out.println(format("HI, I'M %s", UUID.randomUUID()));
 
         // Assert
-        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        assertEquals(format("HI %s", clientUUID), in.readLine());
+        assertEquals(format("HI %s", UUID.randomUUID()), in.readLine());
     }
 
     @Test
     public void sayByeToServer() throws IOException {
         // Arrange
-        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+        in.readLine();
+
         UUID clientUUID = UUID.randomUUID();
-        String bye = "BYE MATE!";
+        out.println(format("HI, I'M %s", clientUUID));
+        in.readLine();
 
         // Act
-        out.println(bye);
+        out.println("BYE MATE!");
 
         // Assert
-        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        assertEquals(format("BYE %s, WE SPOKE FOR %d MS", clientUUID, 12345), in.readLine());
+        assertEquals(format("BYE %s, WE SPOKE FOR %d MS", clientUUID, System.currentTimeMillis() - startTime), in.readLine());
     }
 
     @Test
-    public void addNodeSuccessfully() throws IOException {
+    public void addNode_NodeAdded() throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         assertTrue(in.readLine().startsWith("HI, I'M "));
         // Arrange
@@ -83,7 +83,7 @@ public class TCPServerTest {
     }
 
     @Test
-    public void addNodeFailed_NodeAlreadyExists() throws IOException {
+    public void addNode_NodeAlreadyExists() throws IOException {
         // Arrange
         in.readLine();
 
@@ -99,7 +99,7 @@ public class TCPServerTest {
     }
 
     @Test
-    public void addEdge_Success() throws IOException {
+    public void addEdge_EdgeAdded() throws IOException {
         // Arrange
         in.readLine();
 
@@ -115,5 +115,142 @@ public class TCPServerTest {
 
         // Assert
         assertEquals("EDGE ADDED", in.readLine());
+    }
+
+    @Test
+    public void addEdge_NodeNotFound() throws IOException {
+        // Arrange
+        in.readLine();
+
+        out.println("ADD NODE A");
+        in.readLine();
+
+        //  Act
+        out.println("ADD EDGE A B 1");
+
+
+        // Assert
+        assertEquals("ERROR: NODE NOT FOUND", in.readLine());
+    }
+
+    @Test
+    public void removeNode_NodeRemoved() throws IOException {
+        // Arrange
+        in.readLine();
+
+        out.println("ADD NODE A");
+        in.readLine();
+
+        //  Act
+        out.println("REMOVE NODE A");
+
+
+        // Assert
+        assertEquals("NODE REMOVED", in.readLine());
+    }
+
+    @Test
+    public void removeNode_RemoveAllConnectedEdges() throws IOException {
+        // Arrange
+        in.readLine();
+
+        addNewEdge();
+
+        //  Act
+        out.println("REMOVE NODE A");
+
+        // Assert
+        assertEquals("NODE REMOVED", in.readLine());
+    }
+
+    private void addNewEdge() throws IOException {
+        out.println("ADD NODE A");
+        in.readLine();
+
+        out.println("ADD NODE B");
+        in.readLine();
+
+        out.println("ADD EDGE A B 1");
+        in.readLine();
+    }
+
+    @Test
+    public void removeNode_NodeNotFound() throws IOException {
+        // Arrange
+        in.readLine();
+
+        //  Act
+        out.println("REMOVE NODE B");
+
+
+        // Assert
+        assertEquals("ERROR: NODE NOT FOUND", in.readLine());
+    }
+
+    @Test
+    public void removeEdge_EdgeRemoved() throws IOException {
+        // Arrange
+        in.readLine();
+
+        addNewEdge();
+
+        out.println("REMOVE EDGE A B");
+
+
+        // Assert
+        assertEquals("EDGE REMOVED", in.readLine());
+    }
+
+    @Test
+    public void removeEdge_EdgeDoesNotExist_EdgeRemoved() throws IOException {
+        // Arrange
+        in.readLine();
+
+        out.println("ADD NODE A");
+        in.readLine();
+
+        out.println("ADD NODE B");
+        in.readLine();
+
+        // Act
+        out.println("REMOVE EDGE A B");
+
+        // Assert
+        assertEquals("EDGE REMOVED", in.readLine());
+    }
+
+
+    @Test
+    public void shortestPath_WeightReturned() throws IOException {
+        // Arrange
+        in.readLine();
+
+        out.println("ADD NODE A");
+        in.readLine();
+
+        out.println("ADD NODE B");
+        in.readLine();
+
+        out.println("ADD NODE C");
+        in.readLine();
+
+        out.println("ADD NODE D");
+        in.readLine();
+
+        //  Act
+        out.println("ADD EDGE A B 1");
+        in.readLine();
+        out.println("ADD EDGE A C 2");
+        in.readLine();
+        out.println("ADD EDGE B D 1");
+        in.readLine();
+        out.println("ADD EDGE C D 3");
+        in.readLine();
+        out.println("ADD EDGE A D 7");
+        in.readLine();
+
+        // Assert
+        out.println("SHORTEST PATH A D");
+        assertEquals("2", in.readLine());
     }
 }

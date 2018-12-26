@@ -1,13 +1,15 @@
 package libs;
 
+import org.jgrapht.GraphPath;
+import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.DirectedWeightedMultigraph;
 
-public class MyGraph {
+public class Graph {
     private DirectedWeightedMultigraph<String, DefaultWeightedEdge> graph;
 
-    public MyGraph() {
-        graph = new DirectedWeightedMultigraph<String, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+    public Graph() {
+        graph = new DirectedWeightedMultigraph<>(DefaultWeightedEdge.class);
     }
 
     public synchronized void addNode(final String nodeName) throws NodeAlreadyExistsException {
@@ -40,6 +42,14 @@ public class MyGraph {
         if (graph.containsEdge(source, target)) {
             graph.removeEdge(source, target);
         }
+    }
+
+    public synchronized int getShortestPath(final String source, final String target) throws NodeNotFoundException {
+        assertNodeExists(source);
+        assertNodeExists(target);
+
+        final GraphPath<String, DefaultWeightedEdge> path = new DijkstraShortestPath<>(graph).getPath(source, target);
+        return path == null ? Integer.MAX_VALUE : (int) path.getWeight();
     }
 
     private void assertNodeExists(String node) throws NodeNotFoundException {

@@ -21,16 +21,17 @@ public class ClientSocketHandler implements Runnable {
     public static final String RSP_EDGE_ADDED = "EDGE ADDED";
     public static final String CMD_REMOVE_NODE = "REMOVE NODE ";
     public static final String RSP_NODE_REMOVED = "NODE REMOVED";
+    public static final String CMD_SHORTEST_PATH = "SHORTEST PATH ";
 
     private final Socket clientSocket;
     private final Session session;
-    private final MyGraph graph;
+    private final Graph graph;
 
 
-    public ClientSocketHandler(final Socket clientSkt, MyGraph gr) {
+    public ClientSocketHandler(final Socket clientSkt, final Graph aGraph) {
         clientSocket = clientSkt;
         session = new Session();
-        graph = gr;
+        graph = aGraph;
     }
 
 
@@ -121,9 +122,20 @@ public class ClientSocketHandler implements Runnable {
             }
 
             return RSP_EDGE_REMOVED;
+        } else if (command.startsWith(CMD_SHORTEST_PATH)) {
+            String nodes = command.replace(CMD_SHORTEST_PATH, "");
+            String[] s = nodes.split(" ");
+            int shortestPath = Integer.MAX_VALUE;
+            try {
+                shortestPath = graph.getShortestPath(s[0], s[1]);
+            } catch (NodeNotFoundException e) {
+                return ERROR_NODE_NOT_FOUND;
+            }
+
+            return format("%d", shortestPath);
+
         }
 
         return SERVER_UNKNOWN_REQUEST;
     }
-
 }
