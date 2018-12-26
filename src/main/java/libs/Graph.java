@@ -4,16 +4,18 @@ import org.jgrapht.GraphPath;
 import org.jgrapht.alg.interfaces.ShortestPathAlgorithm.SingleSourcePaths;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.DirectedWeightedMultigraph;
+import org.jgrapht.graph.DirectedWeightedPseudograph;
 
 import java.util.stream.Collectors;
 
 public class Graph {
-    private DirectedWeightedMultigraph<String, DefaultWeightedEdge> graph;
+
+    // The DirectedWeightedPseudograph allows loops, multiple edges
+    private final DirectedWeightedPseudograph<String, DefaultWeightedEdge> graph;
 
     public Graph() {
 
-        graph = new DirectedWeightedMultigraph<>(DefaultWeightedEdge.class);
+        graph = new DirectedWeightedPseudograph<>(DefaultWeightedEdge.class);
     }
 
     public synchronized void addNode(final String nodeName) throws NodeAlreadyExistsException {
