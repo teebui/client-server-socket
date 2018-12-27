@@ -1,39 +1,18 @@
 package libs;
 
 import static java.lang.String.format;
+import static libs.Responses.*;
+import static libs.Commands.*;
 
 public class CommunicationManager {
-
-    // List of client commands
-    private static final String CMD_CLIENT_GREETING = "HI, I'M ";
-    private static final String CMD_CLIENT_BYE = "BYE MATE!";
-    private static final String CMD_REMOVE_EDGE = "REMOVE EDGE ";
-    private static final String CMD_ADD_NODE = "ADD NODE ";
-    private static final String CMD_ADD_EDGE = "ADD EDGE ";
-    private static final String CMD_REMOVE_NODE = "REMOVE NODE ";
-    private static final String CMD_SHORTEST_PATH = "SHORTEST PATH ";
-    private static final String CMD_CLOSER_THAN = "CLOSER THAN ";
-
-    // List of server responses
-    private static final String RSP_SERVER_INTRO = "HI, I'M %s";
-    private static final String RSP_SERVER_GREETING = "HI %s";
-    private static final String RSP_SERVER_BYE = "BYE %s, WE SPOKE FOR %d MS";
-    private static final String RSP_UNKNOWN_REQUEST = "SORRY, I DIDN'T UNDERSTAND THAT";
-    private static final String RSP_ERROR_NODE_ALREADY_EXISTS = "ERROR: NODE ALREADY EXISTS";
-    private static final String RSP_NODE_ADDED = "NODE ADDED";
-    private static final String RSP_ERROR_NODE_NOT_FOUND = "ERROR: NODE NOT FOUND";
-    private static final String RSP_EDGE_REMOVED = "EDGE REMOVED";
-    private static final String RSP_EDGE_ADDED = "EDGE ADDED";
-    private static final String RSP_NODE_REMOVED = "NODE REMOVED";
 
     private Session session;
     private Graph graph;
 
-
     /**
      * Receives a client's command, acts accordingly and dispatches responses
      * @param session session information of the current client
-     * @param graph 
+     * @param graph
      */
     public CommunicationManager(final Session session, final Graph graph) {
 
