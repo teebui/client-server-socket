@@ -34,7 +34,6 @@ public class CommunicationManager {
     }
 
     public String getResponse(String command) {
-        CommandFactory.getCommand(command);
 
         if (command.startsWith(CMD_CLIENT_GREETING)) {
             final String clientID = command.replace(CMD_CLIENT_GREETING, "");
