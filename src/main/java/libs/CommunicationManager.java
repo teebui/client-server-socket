@@ -26,19 +26,36 @@ public class CommunicationManager {
     private static final String RSP_EDGE_ADDED = "EDGE ADDED";
     private static final String RSP_NODE_REMOVED = "NODE REMOVED";
 
-    public static boolean clientSaysGoodBye(String command) {
+    private Session session;
+    private Graph graph;
+
+
+    /**
+     * Receives a client's command, acts accordingly and dispatches responses
+     * @param session session information of the current client
+     * @param graph 
+     */
+    public CommunicationManager(final Session session, final Graph graph) {
+
+        this.session = session;
+        this.graph = graph;
+    }
+
+    public boolean clientSaysGoodBye(String command) {
         return command.equals(CMD_CLIENT_BYE);
     }
 
-    public static String getServerGreeting(final Session session) {
+    public String getServerGreeting() {
         return format(RSP_SERVER_INTRO, session.getSessionID());
     }
 
-    public static String getServerGoodbye(final Session session) {
+    public String getServerGoodbye() {
+        session.terminate();
         return format(RSP_SERVER_BYE, session.getClientName(), session.getDuration());
     }
 
-    public static String getResponse(String command, Session session, Graph graph) {
+    public String getResponse(String command) {
+        CommandFactory.getCommand(command);
 
         if (command.startsWith(CMD_CLIENT_GREETING)) {
             final String clientID = command.replace(CMD_CLIENT_GREETING, "");

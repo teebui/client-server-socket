@@ -15,7 +15,6 @@ public class Graph {
     private final DirectedWeightedPseudograph<String, DefaultWeightedEdge> graph;
 
     public Graph() {
-
         graph = new DirectedWeightedPseudograph<>(DefaultWeightedEdge.class);
     }
 

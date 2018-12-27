@@ -7,43 +7,38 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import static libs.CommunicationManager.*;
-
 public class ClientSocketHandler implements Runnable {
 
     private static final int CLIENT_TIMEOUT = 30000;
     private final Socket clientSocket;
-    private final Session session;
-    private final Graph graph;
     private PrintWriter out;
     private BufferedReader in;
+    private CommunicationManager comm;
 
-    public ClientSocketHandler(final Socket clientSkt, final Graph aGraph) throws IOException {
-        session = new Session();
-        graph = aGraph;
+    public ClientSocketHandler(final Socket clientSkt, final Graph graph) throws IOException {
         clientSocket = clientSkt;
+        comm = new CommunicationManager(new Session(), graph);
         initializeClientSocket();
     }
 
     public void run() {
-        sendResponse(getServerGreeting(session));
-        System.out.println("S: " + getServerGreeting(session));
+        sendResponse(comm.getServerGreeting());
+        System.out.println("S: " + comm.getServerGreeting());
 
         String command, response;
         try {
             while ((command = in.readLine()) != null) {
                 System.out.println("C: " + command);
-                response = getResponse(command, session, graph);
+                response = comm.getResponse(command);
                 System.out.println("S: " + response);
                 sendResponse(response);
 
-                if (clientSaysGoodBye(command)) {
+                if (comm.clientSaysGoodBye(command)) {
                     return;
                 }
             }
         } catch (InterruptedIOException e) {
-            session.terminate();
-            sendResponse(getServerGoodbye(session));
+            sendResponse(comm.getServerGoodbye());
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
