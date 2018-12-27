@@ -6,7 +6,17 @@ import libs.Session;
 import static libs.Commands.*;
 
 public class CommandExecutorFactory {
-    public static CommandExecutor getExecutor(final String command, final Session session, final Graph graph) {
+
+    private final Session session;
+    private final Graph graph;
+
+    public CommandExecutorFactory(final Session session, final Graph graph) {
+
+        this.session = session;
+        this.graph = graph;
+    }
+
+    public CommandExecutor getExecutor(final String command) {
         if (command.startsWith(CMD_CLIENT_GREETING)) {
             return new GreetingCommandExecutor(command, session);
         } else if (command.equals(CMD_CLIENT_BYE)) {
