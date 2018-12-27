@@ -11,5 +11,4 @@ public class Commands {
     public static final String CMD_REMOVE_NODE = "REMOVE NODE ";
     public static final String CMD_SHORTEST_PATH = "SHORTEST PATH ";
     public static final String CMD_CLOSER_THAN = "CLOSER THAN ";
-
 }

@@ -8,23 +8,22 @@ public class TCPServer {
     private ServerSocket serverSocket;
 
     public void start() {
-        Graph graph = new Graph();
         System.out.println("Server running on port " + PORT_NUMBER);
+
         try {
             serverSocket = new ServerSocket(PORT_NUMBER);
             while (true) {
-                ClientSocketHandler handler = new ClientSocketHandler(serverSocket.accept(), graph);
-                Thread t = new Thread(handler);
-                t.start();
+                ClientSocketHandler handler = new ClientSocketHandler(serverSocket.accept(), new Graph());
+                new Thread(handler).start();
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
         } finally {
-            stop();
+            terminate();
         }
     }
 
-    private void stop() {
+    private void terminate() {
         try {
             serverSocket.close();
         } catch (IOException e) {

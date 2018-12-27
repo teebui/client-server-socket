@@ -17,6 +17,7 @@ public class CommandExecutorFactory {
     }
 
     public CommandExecutor getExecutor(final String command) {
+
         if (command.startsWith(CMD_CLIENT_GREETING)) {
             return new GreetingCommandExecutor(command, session);
         } else if (command.equals(CMD_CLIENT_BYE)) {
