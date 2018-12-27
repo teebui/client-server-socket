@@ -2,6 +2,8 @@ package ClientHandler;
 
 import CommunicationHandler.CommunicationManager;
 import Graph.Graph;
+import Server.TCPServer;
+import org.apache.logging.log4j.LogManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,10 +11,19 @@ import java.io.InterruptedIOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.logging.Logger;
+
+import static java.lang.String.*;
+import static java.lang.String.format;
 
 public class ClientSocketHandler implements Runnable {
 
+    private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger(ClientSocketHandler.class);
     private static final int CLIENT_TIMEOUT = 30000;
+    private static final String CLIENT_SAYS = "Client: %s";
+    private static final String SERVER_SAYS = "Server: %s";
+    private static final String MSG_TIMED_OUT = "Timed out.";
+
     private final Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
@@ -26,24 +37,27 @@ public class ClientSocketHandler implements Runnable {
 
     public void run() {
         sendResponse(comm.getServerGreeting());
-        System.out.println("S: " + comm.getServerGreeting());
+        LOGGER.info(format("Server: %s", comm.getServerGreeting()));
 
         String command, response;
         try {
+            // Read client's command and look for the right response
+            // until the client wants to stop the conversation
             while ((command = in.readLine()) != null) {
-                System.out.println("C: " + command);
+                LOGGER.info(format(CLIENT_SAYS, command));
                 response = comm.getResponse(command);
-                System.out.println("S: " + response);
                 sendResponse(response);
+                LOGGER.info(format(SERVER_SAYS, response));
 
                 if (comm.clientSaysGoodBye(command)) {
                     return;
                 }
             }
-        } catch (InterruptedIOException e) {
+        } catch (final InterruptedIOException e) { // if client says nothing after 30 seconds
+            LOGGER.debug(MSG_TIMED_OUT, e);
             sendResponse(comm.getServerGoodbye());
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (final IOException e) {
+            LOGGER.error("Error reading client's command...", e);
         } finally {
             terminateClient();
         }
@@ -54,8 +68,8 @@ public class ClientSocketHandler implements Runnable {
             clientSocket.close();
             in.close();
             out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (final IOException e) {
+            LOGGER.error("Error terminating client socket handler...", e);
         }
     }
 

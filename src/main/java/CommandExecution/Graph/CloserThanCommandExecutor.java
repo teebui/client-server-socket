@@ -18,7 +18,7 @@ public class CloserThanCommandExecutor implements CommandExecutor {
 
     @Override
     public String getResponse() {
-        String nodes = command.replace(CMD_CLOSER_THAN, "");
+        final String nodes = command.replace(CMD_CLOSER_THAN, "");
         String[] s = nodes.split(" ");
         String closerNodes;
         try {
