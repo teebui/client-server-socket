@@ -1,4 +1,4 @@
-package libs;
+package Messages;
 
 // List of server responses
 public class Responses {

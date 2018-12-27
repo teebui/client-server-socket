@@ -1,11 +1,12 @@
-package libs.CommandExecution;
+package CommandExecution.Graph;
 
-import libs.Graph;
-import libs.NodeNotFoundException;
+import CommandExecution.CommandExecutor;
+import Graph.Graph;
+import Graph.NodeNotFoundException;
 
 import static java.lang.String.format;
-import static libs.Commands.CMD_SHORTEST_PATH;
-import static libs.Responses.RSP_ERROR_NODE_NOT_FOUND;
+import static Messages.Commands.CMD_SHORTEST_PATH;
+import static Messages.Responses.RSP_ERROR_NODE_NOT_FOUND;
 
 public class ShortestPathCommandExecutor implements CommandExecutor {
     private final String command;

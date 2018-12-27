@@ -1,4 +1,4 @@
-package libs;
+package Graph;
 
 public class NodeAlreadyExistsException extends RuntimeException {
 }

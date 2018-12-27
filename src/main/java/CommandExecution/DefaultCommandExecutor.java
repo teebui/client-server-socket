@@ -1,6 +1,6 @@
-package libs.CommandExecution;
+package CommandExecution;
 
-import static libs.Responses.RSP_UNKNOWN_REQUEST;
+import static Messages.Responses.RSP_UNKNOWN_REQUEST;
 
 public class DefaultCommandExecutor implements CommandExecutor {
     @Override

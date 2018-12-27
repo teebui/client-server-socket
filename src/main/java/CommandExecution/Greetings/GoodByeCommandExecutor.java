@@ -1,9 +1,10 @@
-package libs.CommandExecution;
+package CommandExecution.Greetings;
 
-import libs.Session;
+import CommandExecution.CommandExecutor;
+import ClientHandler.Session;
 
 import static java.lang.String.format;
-import static libs.Responses.RSP_SERVER_BYE;
+import static Messages.Responses.RSP_SERVER_BYE;
 
 public class GoodByeCommandExecutor implements CommandExecutor {
 

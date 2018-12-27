@@ -1,10 +1,11 @@
-package libs.CommandExecution;
+package CommandExecution.Graph;
 
-import libs.Graph;
-import libs.NodeNotFoundException;
+import CommandExecution.CommandExecutor;
+import Graph.Graph;
+import Graph.NodeNotFoundException;
 
-import static libs.Commands.CMD_CLOSER_THAN;
-import static libs.Responses.RSP_ERROR_NODE_NOT_FOUND;
+import static Messages.Commands.CMD_CLOSER_THAN;
+import static Messages.Responses.RSP_ERROR_NODE_NOT_FOUND;
 
 public class CloserThanCommandExecutor implements CommandExecutor {
     private final String command;

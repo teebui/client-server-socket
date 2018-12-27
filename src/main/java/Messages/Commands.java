@@ -1,4 +1,4 @@
-package libs;
+package Messages;
 
 // List of client commands
 public class Commands {

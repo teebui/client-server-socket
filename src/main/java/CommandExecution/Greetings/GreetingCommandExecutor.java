@@ -1,10 +1,11 @@
-package libs.CommandExecution;
+package CommandExecution.Greetings;
 
-import libs.Session;
+import CommandExecution.CommandExecutor;
+import ClientHandler.Session;
 
 import static java.lang.String.format;
-import static libs.Commands.CMD_CLIENT_GREETING;
-import static libs.Responses.RSP_SERVER_GREETING;
+import static Messages.Commands.CMD_CLIENT_GREETING;
+import static Messages.Responses.RSP_SERVER_GREETING;
 
 public class GreetingCommandExecutor implements CommandExecutor {
 

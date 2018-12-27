@@ -1,4 +1,4 @@
-package libs;
+package Graph;
 
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.interfaces.ShortestPathAlgorithm.SingleSourcePaths;
@@ -9,7 +9,7 @@ import org.jgrapht.graph.DirectedWeightedPseudograph;
 
 import java.util.stream.Collectors;
 
-public class Graph {
+public class  Graph {
 
     // The DirectedWeightedPseudograph allows loops, multiple edges
     private final DirectedWeightedPseudograph<String, DefaultWeightedEdge> graph;

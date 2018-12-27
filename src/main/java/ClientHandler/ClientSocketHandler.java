@@ -1,4 +1,7 @@
-package libs;
+package ClientHandler;
+
+import CommunicationHandler.CommunicationManager;
+import Graph.Graph;
 
 import java.io.BufferedReader;
 import java.io.IOException;
