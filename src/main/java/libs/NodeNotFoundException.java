@@ -1,8 +1,4 @@
 package libs;
 
-public class NodeNotFoundException extends Throwable {
-    public NodeNotFoundException() {
-
-    }
-
+public class NodeNotFoundException extends RuntimeException {
 }

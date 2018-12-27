@@ -1,4 +1,4 @@
 package libs;
 
-public class NodeAlreadyExistsException extends Throwable {
+public class NodeAlreadyExistsException extends RuntimeException {
 }
