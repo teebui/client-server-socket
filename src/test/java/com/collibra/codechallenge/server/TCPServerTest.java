@@ -1,6 +1,5 @@
 package com.collibra.codechallenge.server;
 
-import com.collibra.codechallenge.clienthandler.ClientSocketHandler;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,7 +8,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.UUID;
 
@@ -18,6 +16,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 
+/**
+ * Bring some simple test cases to the TCPServer
+ * For now, the main Program needs to start first, separately, then we can run these tests.
+ */
 public class TCPServerTest {
     private static final String HOST = "localhost";
     private static final int PORT_NUMBER = 50000;
