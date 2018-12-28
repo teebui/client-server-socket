@@ -18,7 +18,7 @@ import static messages.Responses.RSP_SERVER_INTRO;
 public class CommunicationManager {
 
     private Session session;
-    private CommandExecutorFactory factory;
+    private Graph graph;
 
     /**
      * Receives a client's command, acts accordingly and dispatches responses
@@ -26,9 +26,8 @@ public class CommunicationManager {
      * @param graph
      */
     public CommunicationManager(final Graph graph) {
-
+        this.graph = graph;
         this.session = new Session();
-        this.factory = new CommandExecutorFactory(session, graph);
     }
 
     public boolean clientSaysGoodBye(final String command) {
@@ -45,6 +44,6 @@ public class CommunicationManager {
     }
 
     public String getResponse(final String command) {
-        return factory.getExecutor(command).getResponse();
+        return CommandExecutorFactory.getExecutor(command, session, graph).getResponse();
     }
 }
