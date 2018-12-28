@@ -1,5 +1,6 @@
-package libs;
+package com.collibra.codechallenge.server;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,15 +25,22 @@ public class TCPServerTest {
     private static long startTime;
 
     @Before
-    public void setUp() throws IOException, InterruptedException {
-//        TCPServer tcpServer = new TCPServer();
-//        tcpServer.start();
-//        Thread.sleep(2000);
+    public void setUp() throws IOException {
+        TCPServer tcpServer = new TCPServer();
+        tcpServer.start(PORT_NUMBER);
+
         System.out.println("Connect now to the server...");
         startTime = System.currentTimeMillis();
         clientSocket = new Socket(HOST, PORT_NUMBER);
         in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         out = new PrintWriter(clientSocket.getOutputStream(), true);
+    }
+
+    @After
+    public void tearDown() throws IOException {
+        clientSocket.close();
+        in.close();
+        out.close();
     }
 
     @Test
@@ -45,12 +53,13 @@ public class TCPServerTest {
     public void sayHiToServer() throws IOException {
         // Arrange
         in.readLine();
+        UUID uuid = UUID.randomUUID();
 
         // Act
-        out.println(format("HI, I'M %s", UUID.randomUUID()));
+        out.println(format("HI, I'M %s", uuid));
 
         // Assert
-        assertEquals(format("HI %s", UUID.randomUUID()), in.readLine());
+        assertEquals(format("HI %s", uuid), in.readLine());
     }
 
     @Test
@@ -71,15 +80,14 @@ public class TCPServerTest {
 
     @Test
     public void addNode_NodeAdded() throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        assertTrue(in.readLine().startsWith("HI, I'M "));
         // Arrange
-        PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+        in.readLine();
 
-
+        // Act
         out.println("ADD NODE A");
-        assertEquals("NODE ADDED", in.readLine());
 
+        // Act
+        assertEquals("NODE ADDED", in.readLine());
     }
 
     @Test
