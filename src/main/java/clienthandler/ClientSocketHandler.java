@@ -13,7 +13,7 @@ import java.net.Socket;
 import static java.lang.String.format;
 
 /**
- * Takes care of conversation between the server and a client connected.
+ * Takes care of the conversation between the server and a client connected.
  * Delegates the job of executing clients'commands and getting right responses to the
  * {@link CommunicationManager}.
  *
@@ -32,9 +32,9 @@ public class ClientSocketHandler implements Runnable {
     private static final String MSG_ERROR_PARSING_COMMAND = "Error parsing command.";
 
     private final Socket clientSocket;
+    private final CommunicationManager comm;
     private PrintWriter out;
     private BufferedReader in;
-    private CommunicationManager comm;
 
     public ClientSocketHandler(final Socket clientSkt) {
         clientSocket = clientSkt;
@@ -101,7 +101,7 @@ public class ClientSocketHandler implements Runnable {
             clientSocket.setSoTimeout(CLIENT_TIMEOUT);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             out = new PrintWriter(clientSocket.getOutputStream(), true);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOGGER.error(MSG_ERROR_INITIALISING_CLIENT_SOCKET, e);
         }
     }

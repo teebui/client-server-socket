@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * This class is also implemented as a singleton to 1) mitigate the need for object instantiation, thus
  * avoid chaining; and 2) guarantee better thread-safety
  */
-public class  Graph {
+public class Graph {
     private static volatile Graph instance;
     private static final Object mutex = new Object();
 
@@ -43,27 +43,27 @@ public class  Graph {
         return result;
     }
 
-    public synchronized void addNode(final String nodeName) {
+    public synchronized void addNode(final String nodeName) throws NodeAlreadyExistsException {
         if (!graph.addVertex(nodeName)) {
             throw new NodeAlreadyExistsException();
         }
     }
 
-    public synchronized void removeNode(final String nodeName) {
+    public synchronized void removeNode(final String nodeName) throws NodeNotFoundException {
         if (!graph.removeVertex(nodeName)) {
             throw new NodeNotFoundException();
         }
     }
 
-    public synchronized void addEdge(final String source, final String target, final int weight) {
+    public synchronized void addEdge(final String source, final String target, final int weight) throws NodeNotFoundException {
         assertNodeExists(source);
         assertNodeExists(target);
 
-        DefaultWeightedEdge edge = graph.addEdge(source, target);
+        final DefaultWeightedEdge edge = graph.addEdge(source, target);
         graph.setEdgeWeight(edge, weight);
     }
 
-    public synchronized void removeEdge(final String source, final String target) {
+    public synchronized void removeEdge(final String source, final String target) throws NodeNotFoundException {
         assertNodeExists(source);
         assertNodeExists(target);
 
@@ -75,7 +75,7 @@ public class  Graph {
     /**
      * Uses {@link DijkstraShortestPath) algorithm to find the shortest path between two nodes
      */
-    public synchronized int getShortestPath(final String source, final String target) {
+    public synchronized int getShortestPath(final String source, final String target) throws NodeNotFoundException {
         assertNodeExists(source);
         assertNodeExists(target);
 
@@ -83,7 +83,7 @@ public class  Graph {
         return path == null ? Integer.MAX_VALUE : (int) path.getWeight();
     }
 
-    public synchronized String findNodesCloserThan(final int weight, final String node) {
+    public synchronized String findNodesCloserThan(final int weight, final String node) throws NodeNotFoundException {
         assertNodeExists(node);
 
         // From a given node, the BellmanFordShortestPath algorithm is used to find all reachable nodes, among which
@@ -100,7 +100,7 @@ public class  Graph {
             .collect(Collectors.joining(","));
     }
 
-    private synchronized void assertNodeExists(final String node) {
+    private synchronized void assertNodeExists(final String node) throws NodeNotFoundException {
         if (!graph.containsVertex(node)) {
             throw new NodeNotFoundException();
         }

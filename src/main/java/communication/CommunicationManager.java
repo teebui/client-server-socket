@@ -17,11 +17,7 @@ import static messages.Responses.SERVER_INTRO;
  */
 public class CommunicationManager {
 
-    private Session session;
-
-    public CommunicationManager() {
-        this.session = new Session();
-    }
+    private Session session = new Session();
 
     public boolean clientSaysGoodBye(final String command) {
         return command.equals(BYE);

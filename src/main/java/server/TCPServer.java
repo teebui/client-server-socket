@@ -31,7 +31,7 @@ public class TCPServer {
             while (true) {
                 // for each client connected, create a new handler
                 // and handle communication with that client in a new thread
-                ClientSocketHandler handler = new ClientSocketHandler(serverSocket.accept());
+                final ClientSocketHandler handler = new ClientSocketHandler(serverSocket.accept());
                 new Thread(handler).start();
             }
         } catch (final IOException e) {
