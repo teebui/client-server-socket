@@ -1,8 +1,6 @@
 package clienthandler;
 
 import communication.CommunicationManager;
-import communication.Session;
-import graph.Graph;
 import org.apache.logging.log4j.LogManager;
 
 import java.io.BufferedReader;

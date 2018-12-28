@@ -2,7 +2,7 @@ package commandexecution.greetings;
 
 import communication.Session;
 
-public class SessionBasedCommandExecutor {
+class SessionBasedCommandExecutor {
     Session session;
 
     SessionBasedCommandExecutor(final Session session) {
