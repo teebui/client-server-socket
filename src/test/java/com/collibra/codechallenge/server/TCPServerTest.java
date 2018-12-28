@@ -1,5 +1,6 @@
 package com.collibra.codechallenge.server;
 
+import com.collibra.codechallenge.clienthandler.ClientSocketHandler;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -8,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.UUID;
 
@@ -26,8 +28,8 @@ public class TCPServerTest {
 
     @Before
     public void setUp() throws IOException {
-        TCPServer tcpServer = new TCPServer();
-        tcpServer.start(PORT_NUMBER);
+//        TCPServer tcpServer = new TCPServer();
+//        tcpServer.start(PORT_NUMBER);
 
         System.out.println("Connect now to the server...");
         startTime = System.currentTimeMillis();
@@ -45,7 +47,6 @@ public class TCPServerTest {
 
     @Test
     public void connectSuccessfullyToTCPServerOnPort50000() throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         assertTrue(in.readLine().startsWith("HI, I'M "));
     }
 
@@ -75,7 +76,7 @@ public class TCPServerTest {
         out.println("BYE MATE!");
 
         // Assert
-        assertEquals(format("BYE %s, WE SPOKE FOR %d MS", clientUUID, System.currentTimeMillis() - startTime), in.readLine());
+        assertTrue(in.readLine().contains(format("BYE %s, WE SPOKE FOR", clientUUID)));
     }
 
     @Test
@@ -84,7 +85,7 @@ public class TCPServerTest {
         in.readLine();
 
         // Act
-        out.println("ADD NODE A");
+        out.println("ADD NODE E");
 
         // Act
         assertEquals("NODE ADDED", in.readLine());
@@ -134,7 +135,7 @@ public class TCPServerTest {
         in.readLine();
 
         //  Act
-        out.println("ADD EDGE A B 1");
+        out.println("ADD EDGE A D 1");
 
 
         // Assert
