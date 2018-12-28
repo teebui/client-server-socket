@@ -70,6 +70,10 @@ public class ClientSocketHandler implements Runnable {
         }
     }
 
+
+    /**
+     * Closes client socket and the relevant I/O reader/writer
+     */
     private void terminate() {
         try {
             clientSocket.close();

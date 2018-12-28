@@ -1,7 +1,6 @@
 package communication;
 
 import commandexecution.CommandExecutorFactory;
-import graph.Graph;
 
 import static java.lang.String.format;
 import static messages.Commands.CMD_CLIENT_BYE;
@@ -12,16 +11,14 @@ import static messages.Responses.RSP_SERVER_INTRO;
  * Acts as the real boss of communication, takes the commands, tells {@link CommandExecutorFactory} to find the
  * right command executor and returns its response.
  *
+ * Keeps track of the communication between the client and the server using a session.
+ *
  * Provides abstraction on messages used.
  */
 public class CommunicationManager {
 
     private Session session;
 
-    /**
-     * Receives a client's command, acts accordingly and dispatches responses
-     *
-     */
     public CommunicationManager() {
         this.session = new Session();
     }

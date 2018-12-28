@@ -6,6 +6,10 @@ import communication.Session;
 import static java.lang.String.format;
 import static messages.Responses.RSP_SERVER_BYE;
 
+
+/**
+ * Terminates the current session of a client and sends a goodbye with the duration of the communication
+ */
 public class GoodByeCommandExecutor extends SessionBasedCommandExecutor implements CommandExecutor {
 
     public GoodByeCommandExecutor(final Session session) {

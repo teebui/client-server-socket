@@ -72,6 +72,9 @@ public class  Graph {
         }
     }
 
+    /**
+     * Uses {@link DijkstraShortestPath) algorithm to find the shortest path between two nodes
+     */
     public synchronized int getShortestPath(final String source, final String target) {
         assertNodeExists(source);
         assertNodeExists(target);
@@ -85,7 +88,7 @@ public class  Graph {
 
         // From a given node, the BellmanFordShortestPath algorithm is used to find all reachable nodes, among which
         // only those whose weight (or distance) is less than the given weight are returned
-        SingleSourcePaths<String, DefaultWeightedEdge> paths = new BellmanFordShortestPath<>(graph).getPaths(node);
+        final SingleSourcePaths<String, DefaultWeightedEdge> paths = new BellmanFordShortestPath<>(graph).getPaths(node);
 
         return paths
             .getGraph()

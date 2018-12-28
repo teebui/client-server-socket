@@ -1,8 +1,10 @@
 package messages;
 
-// List of client commands
-public class Commands {
 
+/**
+ * List of all recognised commands sent by clients
+ */
+public class Commands {
     public static final String CMD_CLIENT_GREETING = "HI, I'M ";
     public static final String CMD_CLIENT_BYE = "BYE MATE!";
     public static final String CMD_REMOVE_EDGE = "REMOVE EDGE ";

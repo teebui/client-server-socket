@@ -7,6 +7,10 @@ import static java.lang.String.format;
 import static messages.Commands.CMD_CLIENT_GREETING;
 import static messages.Responses.RSP_SERVER_GREETING;
 
+
+/**
+ * Extracts client name from the command and sends back a greeting with that name
+ */
 public class GreetingCommandExecutor extends SessionBasedCommandExecutor implements CommandExecutor {
 
     private final String command;

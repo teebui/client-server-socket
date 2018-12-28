@@ -8,7 +8,8 @@ import communication.Session;
 import static messages.Commands.*;
 
 /**
- * Analyses client commands and picks the right {@link CommandExecutor} instances to handle them
+ * Analyses client commands and picks the right {@link CommandExecutor} instances to handle them.
+ * If a command is not recognisable, an {@link DefaultCommandExecutor} instance is used.
  */
 public class CommandExecutorFactory {
     public static CommandExecutor getExecutor(final String command, final Session session) {

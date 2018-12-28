@@ -8,6 +8,10 @@ import static messages.Commands.CMD_REMOVE_NODE;
 import static messages.Responses.RSP_ERROR_NODE_NOT_FOUND;
 import static messages.Responses.RSP_NODE_REMOVED;
 
+/**
+ * Extracts a node name from the given command and remove that node from the graph.
+ * Returns an error message if the node does not exist.
+ */
 public class RemoveNodeCommandExecutor extends DefaultCommandExecutor {
     public RemoveNodeCommandExecutor(final String command) {
         super(command);
