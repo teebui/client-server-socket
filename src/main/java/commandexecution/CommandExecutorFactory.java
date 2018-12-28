@@ -8,6 +8,9 @@ import clienthandler.Session;
 
 import static messages.Commands.*;
 
+/**
+ *
+ */
 public class CommandExecutorFactory {
 
     private final Session session;

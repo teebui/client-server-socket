@@ -14,7 +14,11 @@ import java.net.Socket;
 import static java.lang.String.format;
 
 /**
- * Runs as a thread and takes care of conversation between the server and a client connected
+ * Takes care of conversation between the server and a client connected.
+ * Delegates the job of executing clients'commands and getting right responses to the
+ * {@link CommunicationManager}.
+ *
+ * This class is meant to run as a thread.
  */
 public class ClientSocketHandler implements Runnable {
 
@@ -81,6 +85,10 @@ public class ClientSocketHandler implements Runnable {
         out.println(response);
     }
 
+
+    /**
+     * Gets ready for the incoming and outgoing messages
+     */
     private void initialize()  {
         try {
             clientSocket.setSoTimeout(CLIENT_TIMEOUT);

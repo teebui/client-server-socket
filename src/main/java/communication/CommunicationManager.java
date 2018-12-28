@@ -10,6 +10,12 @@ import static messages.Responses.RSP_SERVER_BYE;
 import static messages.Responses.RSP_SERVER_INTRO;
 
 
+/**
+ * Acts as the real boss of communication, takes the commands, tells {@link CommandExecutorFactory} to find the
+ * right command executor and returns its response.
+ *
+ * Provides abstraction on messages used.
+ */
 public class CommunicationManager {
 
     private Session session;
