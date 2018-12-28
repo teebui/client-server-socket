@@ -19,7 +19,8 @@ public class CloserThanCommandExecutor implements CommandExecutor {
     @Override
     public String getResponse() {
         final String nodes = command.replace(CMD_CLOSER_THAN, "");
-        String[] s = nodes.split(" ");
+        final String[] s = nodes.split(" ");
+
         String closerNodes;
         try {
             closerNodes = graph.findNodesCloserThan(Integer.parseInt(s[0]), s[1]);

@@ -39,6 +39,6 @@ public class CommandExecutorFactory {
             return new CloserThanCommandExecutor(command, graph);
         }
 
-        return new DefaultCommandExecutor();
+        return new UnknownCommandExecutor();
     }
 }
