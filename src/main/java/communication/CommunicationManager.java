@@ -17,14 +17,12 @@ import static messages.Responses.RSP_SERVER_INTRO;
 public class CommunicationManager {
 
     private Session session;
-    private Graph graph;
 
     /**
      * Receives a client's command, acts accordingly and dispatches responses
      *
      */
     public CommunicationManager() {
-
         this.session = new Session();
     }
 
