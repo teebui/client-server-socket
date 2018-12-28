@@ -4,6 +4,8 @@ import com.collibra.codechallenge.commandexecution.graph.*;
 import com.collibra.codechallenge.commandexecution.greetings.GoodByeCommandExecutor;
 import com.collibra.codechallenge.commandexecution.greetings.GreetingCommandExecutor;
 import com.collibra.codechallenge.communication.Session;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,6 +17,10 @@ import static com.collibra.codechallenge.messages.CommandPatterns.*;
  * If a command is not recognisable, an {@link DefaultCommandExecutor} instance is used.
  */
 public class CommandExecutorFactory {
+
+    private static final Logger LOGGER = LogManager.getLogger(CommandExecutorFactory.class);
+    public static final String MSG_COMMAND_IS_NOT_SUPPORTED = "Command is not supported.";
+
     public static CommandExecutor getExecutor(final String command, final Session session) {
 
         Matcher commandMatcher;
@@ -37,6 +43,7 @@ public class CommandExecutorFactory {
             return new CloserThanCommandExecutor(commandMatcher);
         }
 
+        LOGGER.warn(MSG_COMMAND_IS_NOT_SUPPORTED);
         return new DefaultCommandExecutor();
     }
 

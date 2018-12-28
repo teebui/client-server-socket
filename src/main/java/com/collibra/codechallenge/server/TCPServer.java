@@ -16,7 +16,7 @@ import java.net.ServerSocket;
 public class TCPServer {
 
     private static final Logger LOGGER = LogManager.getLogger(TCPServer.class);
-    private static final String MSG_SERVER_RUNNING_ON_PORT = "Server running on port %d...";
+    private static final String MSG_SERVER_RUNNING_ON_PORT = "Server listening on port %d...";
     private static final String MSG_ERROR_STARTING_SERVER = "Error starting the TCP server.";
     private static final String MSG_ERROR_TERMINATING_SERVER = "Error terminating the TCP server.";
     private static final String MSG_GENERIC_ERROR = "Oops, some problem occurred while processing clients' commands";

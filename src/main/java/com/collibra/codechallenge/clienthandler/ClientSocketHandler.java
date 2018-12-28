@@ -44,18 +44,19 @@ public class ClientSocketHandler implements Runnable {
 
     @Override
     public void run() {
+        // The communication starts with server introducing itself...
         sendResponse(comm.getServerGreeting());
-        LOGGER.info(format("Server: %s", comm.getServerGreeting()));
+        LOGGER.debug(format("Server: %s", comm.getServerGreeting()));
 
         String command, response;
         try {
             // Reads client's command and looks for the right response
             // until the client wants to stop the conversation
             while ((command = in.readLine()) != null) {
-                LOGGER.info(format(CLIENT_SAYS, command));
+                LOGGER.debug(format(CLIENT_SAYS, command));
                 response = comm.getResponse(command);
                 sendResponse(response);
-                LOGGER.info(format(SERVER_SAYS, response));
+                LOGGER.debug(format(SERVER_SAYS, response));
 
                 if (comm.clientSaysGoodBye(command)) {
                     return;
@@ -67,7 +68,7 @@ public class ClientSocketHandler implements Runnable {
         } catch (final IndexOutOfBoundsException e) { // if somehow the command cannot be parsed
             LOGGER.debug(MSG_ERROR_PARSING_COMMAND, e);
             sendResponse(comm.getServerGoodbye());
-        } catch (final IOException e) {
+        } catch (final IOException e) { // if there's a problem reading what the client sends to the server
             LOGGER.error(MSG_ERROR_READING_CLIENT_COMMAND, e);
         } finally {
             terminate();
