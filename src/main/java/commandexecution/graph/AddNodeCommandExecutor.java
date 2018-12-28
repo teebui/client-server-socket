@@ -2,7 +2,7 @@ package commandexecution.graph;
 
 import commandexecution.CommandExecutor;
 import graph.Graph;
-import graph.NodeAlreadyExistsException;
+import exceptions.NodeAlreadyExistsException;
 
 import static messages.Commands.CMD_ADD_NODE;
 import static messages.Responses.RSP_ERROR_NODE_ALREADY_EXISTS;

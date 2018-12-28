@@ -2,7 +2,7 @@ package commandexecution.graph;
 
 import commandexecution.CommandExecutor;
 import graph.Graph;
-import graph.NodeNotFoundException;
+import exceptions.NodeNotFoundException;
 
 import static java.lang.String.format;
 import static messages.Commands.CMD_SHORTEST_PATH;

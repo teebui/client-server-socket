@@ -2,7 +2,7 @@ package commandexecution.graph;
 
 import commandexecution.CommandExecutor;
 import graph.Graph;
-import graph.NodeNotFoundException;
+import exceptions.NodeNotFoundException;
 
 import static messages.Commands.CMD_REMOVE_EDGE;
 import static messages.Responses.RSP_EDGE_REMOVED;

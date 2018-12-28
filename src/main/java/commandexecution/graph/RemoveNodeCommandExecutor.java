@@ -2,7 +2,7 @@ package commandexecution.graph;
 
 import commandexecution.CommandExecutor;
 import graph.Graph;
-import graph.NodeNotFoundException;
+import exceptions.NodeNotFoundException;
 
 import static messages.Commands.CMD_REMOVE_NODE;
 import static messages.Responses.RSP_ERROR_NODE_NOT_FOUND;
