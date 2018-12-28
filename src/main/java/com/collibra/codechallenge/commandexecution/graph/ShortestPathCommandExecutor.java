@@ -28,7 +28,7 @@ public class ShortestPathCommandExecutor extends DefaultCommandExecutor {
 
         int shortestPath;
         try {
-            shortestPath = Graph.getInstance().getShortestPath(sourceNode, targetNode);
+            shortestPath = Graph.getInstance().findShortestPath(sourceNode, targetNode);
         } catch (final NodeNotFoundException e) {
             return ERROR_NODE_NOT_FOUND;
         }

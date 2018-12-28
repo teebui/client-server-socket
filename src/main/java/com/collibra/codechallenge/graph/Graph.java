@@ -53,7 +53,8 @@ public class Graph {
         }
     }
 
-    public synchronized void addEdge(final String source, final String target, final int weight) throws NodeNotFoundException {
+    public synchronized void addEdge(final String source, final String target, final int weight)
+            throws NodeNotFoundException {
         assertNodeExists(source);
         assertNodeExists(target);
 
@@ -73,7 +74,7 @@ public class Graph {
     /**
      * Uses {@link DijkstraShortestPath) algorithm to find the shortest path between two nodes
      */
-    public synchronized int getShortestPath(final String source, final String target) throws NodeNotFoundException {
+    public synchronized int findShortestPath(final String source, final String target) throws NodeNotFoundException {
         assertNodeExists(source);
         assertNodeExists(target);
 
@@ -81,11 +82,17 @@ public class Graph {
         return path == null ? Integer.MAX_VALUE : (int) path.getWeight();
     }
 
-    public synchronized String findNodesCloserThan(final int weight, final String node) throws NodeNotFoundException {
+
+    /**
+     * From a given node, the BellmanFordShortestPath algorithm is used to find all reachable nodes, among which
+     * only those whose weight (or distance) is less than the given weight are returned.
+     * Returns the list of nodes found.
+     */
+    public synchronized String findNodesCloserThan(final int weight, final String node)
+            throws NodeNotFoundException {
+
         assertNodeExists(node);
 
-        // From a given node, the BellmanFordShortestPath algorithm is used to find all reachable nodes, among which
-        // only those whose weight (or distance) is less than the given weight are returned
         final SingleSourcePaths<String, DefaultWeightedEdge> paths = new BellmanFordShortestPath<>(graph).getPaths(node);
 
         return paths
