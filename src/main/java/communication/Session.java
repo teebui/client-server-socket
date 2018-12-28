@@ -11,7 +11,6 @@ public class Session {
     private final UUID sessionID;
     private String clientName;
     private final long startTime;
-    private long endTime;
 
     public Session() {
         sessionID = UUID.randomUUID();
@@ -22,12 +21,8 @@ public class Session {
         return sessionID;
     }
 
-    public void terminate() {
-        endTime = System.currentTimeMillis();
-    }
-
     public long getDuration() {
-        return endTime - startTime;
+        return System.currentTimeMillis() - startTime;
     }
 
     public void setClientName(final String name) {

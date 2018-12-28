@@ -18,7 +18,6 @@ public class GoodByeCommandExecutor extends SessionBasedCommandExecutor implemen
 
     @Override
     public String getResponse() {
-        session.terminate();
         return format(SERVER_BYE, session.getClientName(), session.getDuration());
     }
 }

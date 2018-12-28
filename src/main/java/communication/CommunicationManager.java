@@ -32,7 +32,6 @@ public class CommunicationManager {
     }
 
     public String getServerGoodbye() {
-        session.terminate();
         return format(SERVER_BYE, session.getClientName(), session.getDuration());
     }
 
