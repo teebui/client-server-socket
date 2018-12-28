@@ -1,7 +1,7 @@
 package commandexecution.greetings;
 
 import commandexecution.CommandExecutor;
-import clienthandler.Session;
+import communication.Session;
 
 import static java.lang.String.format;
 import static messages.Commands.CMD_CLIENT_GREETING;

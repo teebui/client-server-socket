@@ -1,6 +1,5 @@
 package communication;
 
-import clienthandler.Session;
 import commandexecution.CommandExecutorFactory;
 import graph.Graph;
 
@@ -23,12 +22,12 @@ public class CommunicationManager {
 
     /**
      * Receives a client's command, acts accordingly and dispatches responses
-     * @param session session information of the current client
+     *
      * @param graph
      */
-    public CommunicationManager(final Session session, final Graph graph) {
+    public CommunicationManager(final Graph graph) {
 
-        this.session = session;
+        this.session = new Session();
         this.factory = new CommandExecutorFactory(session, graph);
     }
 

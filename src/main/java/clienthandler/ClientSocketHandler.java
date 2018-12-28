@@ -1,6 +1,7 @@
 package clienthandler;
 
 import communication.CommunicationManager;
+import communication.Session;
 import graph.Graph;
 import org.apache.logging.log4j.LogManager;
 
@@ -38,7 +39,7 @@ public class ClientSocketHandler implements Runnable {
 
     public ClientSocketHandler(final Socket clientSkt, final Graph graph) {
         clientSocket = clientSkt;
-        comm = new CommunicationManager(new Session(), graph);
+        comm = new CommunicationManager(graph);
         initialize();
     }
 

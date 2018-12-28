@@ -1,7 +1,7 @@
 package commandexecution.greetings;
 
 import commandexecution.CommandExecutor;
-import clienthandler.Session;
+import communication.Session;
 
 import static java.lang.String.format;
 import static messages.Responses.RSP_SERVER_BYE;

@@ -4,7 +4,7 @@ import commandexecution.graph.*;
 import commandexecution.greetings.GoodByeCommandExecutor;
 import commandexecution.greetings.GreetingCommandExecutor;
 import graph.Graph;
-import clienthandler.Session;
+import communication.Session;
 
 import static messages.Commands.*;
 
