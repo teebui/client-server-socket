@@ -4,8 +4,9 @@ import commandexecution.DefaultCommandExecutor;
 import exceptions.NodeNotFoundException;
 import graph.Graph;
 
-import static messages.Commands.CMD_CLOSER_THAN;
-import static messages.Responses.RSP_ERROR_NODE_NOT_FOUND;
+import java.util.regex.Matcher;
+
+import static messages.Responses.ERROR_NODE_NOT_FOUND;
 
 /**
  * Extracts a node name and a weight (distance) from the command and returns a list of all nodes whose weights are
@@ -14,20 +15,20 @@ import static messages.Responses.RSP_ERROR_NODE_NOT_FOUND;
  */
 public class CloserThanCommandExecutor extends DefaultCommandExecutor {
 
-    public CloserThanCommandExecutor(final String command) {
+    public CloserThanCommandExecutor(final Matcher command) {
         super(command);
     }
 
     @Override
     public String getResponse() {
-        final String nodes = command.replace(CMD_CLOSER_THAN, "");
-        final String[] s = nodes.split(" ");
+        final int weight = Integer.parseInt(command.group(1));
+        final String node = command.group(2);
 
         String closerNodes;
         try {
-            closerNodes = Graph.getInstance().findNodesCloserThan(Integer.parseInt(s[0]), s[1]);
-        } catch (NodeNotFoundException e) {
-            return RSP_ERROR_NODE_NOT_FOUND;
+            closerNodes = Graph.getInstance().findNodesCloserThan(weight, node);
+        } catch (final NodeNotFoundException e) {
+            return ERROR_NODE_NOT_FOUND;
         }
 
         return closerNodes;

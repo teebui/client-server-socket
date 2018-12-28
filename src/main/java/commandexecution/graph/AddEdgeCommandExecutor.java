@@ -1,12 +1,13 @@
 package commandexecution.graph;
 
 import commandexecution.DefaultCommandExecutor;
-import graph.Graph;
 import exceptions.NodeNotFoundException;
+import graph.Graph;
 
-import static messages.Commands.CMD_ADD_EDGE;
-import static messages.Responses.RSP_EDGE_ADDED;
-import static messages.Responses.RSP_ERROR_NODE_NOT_FOUND;
+import java.util.regex.Matcher;
+
+import static messages.Responses.EDGE_ADDED;
+import static messages.Responses.ERROR_NODE_NOT_FOUND;
 
 /**
  * Extracts two node names and weight from a command then creates an edge between the two nodes with the given weight.
@@ -14,22 +15,23 @@ import static messages.Responses.RSP_ERROR_NODE_NOT_FOUND;
  */
 public class AddEdgeCommandExecutor extends DefaultCommandExecutor {
 
-    public AddEdgeCommandExecutor(final String command) {
+    public AddEdgeCommandExecutor(final Matcher command) {
         super(command);
     }
 
     @Override
     public String getResponse() {
-        String edge = command.replace(CMD_ADD_EDGE, "");
-        String[] s = edge.split(" ");
-        try {
-            int weight = Integer.parseInt(s[2]);
-            Graph.getInstance().addEdge(s[0], s[1], weight);
 
+        final String sourceNode = command.group(1);
+        final String targetNode = command.group(2);
+        final int weight = Integer.parseInt(command.group(3));
+
+        try {
+            Graph.getInstance().addEdge(sourceNode, targetNode, weight);
         } catch (final NodeNotFoundException e) {
-            return RSP_ERROR_NODE_NOT_FOUND;
+            return ERROR_NODE_NOT_FOUND;
         }
 
-        return RSP_EDGE_ADDED;
+        return EDGE_ADDED;
     }
 }

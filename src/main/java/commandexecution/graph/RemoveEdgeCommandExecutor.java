@@ -4,9 +4,10 @@ import commandexecution.DefaultCommandExecutor;
 import exceptions.NodeNotFoundException;
 import graph.Graph;
 
-import static messages.Commands.CMD_REMOVE_EDGE;
-import static messages.Responses.RSP_EDGE_REMOVED;
-import static messages.Responses.RSP_ERROR_NODE_NOT_FOUND;
+import java.util.regex.Matcher;
+
+import static messages.Responses.EDGE_REMOVED;
+import static messages.Responses.ERROR_NODE_NOT_FOUND;
 
 /**
  * Extracts two node names from the given command and remove the edge between these two nodes.
@@ -14,20 +15,22 @@ import static messages.Responses.RSP_ERROR_NODE_NOT_FOUND;
  */
 public class RemoveEdgeCommandExecutor extends DefaultCommandExecutor {
 
-    public RemoveEdgeCommandExecutor(final String command) {
+    public RemoveEdgeCommandExecutor(final Matcher command) {
         super(command);
     }
 
     @Override
     public String getResponse() {
-        String edge = command.replace(CMD_REMOVE_EDGE, "");
-        String[] s = edge.split(" ");
+
+        final String sourceNode = command.group(1);
+        final String targetNode = command.group(2);
+
         try {
-            Graph.getInstance().removeEdge(s[0], s[1]);
+            Graph.getInstance().removeEdge(sourceNode, targetNode);
         } catch (final NodeNotFoundException e) {
-            return RSP_ERROR_NODE_NOT_FOUND;
+            return ERROR_NODE_NOT_FOUND;
         }
 
-        return RSP_EDGE_REMOVED;
+        return EDGE_REMOVED;
     }
 }

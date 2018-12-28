@@ -29,6 +29,7 @@ public class ClientSocketHandler implements Runnable {
     private static final String MSG_ERROR_READING_CLIENT_COMMAND = "Error reading client's command...";
     private static final String MSG_ERROR_TERMINATE_CLIENT_SOCKET = "Error terminating client socket...";
     private static final String MSG_ERROR_INITIALISING_CLIENT_SOCKET = "Error initialising client socket...";
+    private static final String MSG_ERROR_PARSING_COMMAND = "Error parsing command.";
 
     private final Socket clientSocket;
     private PrintWriter out;
@@ -60,8 +61,11 @@ public class ClientSocketHandler implements Runnable {
                     return;
                 }
             }
-        } catch (final InterruptedIOException e) { // if client says nothing after 30 seconds
+        } catch (final InterruptedIOException e) { // if client says nothing for 30 seconds
             LOGGER.debug(MSG_TIMED_OUT, e);
+            sendResponse(comm.getServerGoodbye());
+        } catch (final IndexOutOfBoundsException e) { // if somehow the command cannot be parsed
+            LOGGER.debug(MSG_ERROR_PARSING_COMMAND, e);
             sendResponse(comm.getServerGoodbye());
         } catch (final IOException e) {
             LOGGER.error(MSG_ERROR_READING_CLIENT_COMMAND, e);

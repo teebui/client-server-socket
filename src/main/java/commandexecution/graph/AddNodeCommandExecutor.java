@@ -4,9 +4,10 @@ import commandexecution.DefaultCommandExecutor;
 import exceptions.NodeAlreadyExistsException;
 import graph.Graph;
 
-import static messages.Commands.CMD_ADD_NODE;
-import static messages.Responses.RSP_ERROR_NODE_ALREADY_EXISTS;
-import static messages.Responses.RSP_NODE_ADDED;
+import java.util.regex.Matcher;
+
+import static messages.Responses.ERROR_NODE_ALREADY_EXISTS;
+import static messages.Responses.NODE_ADDED;
 
 /**
  * Extracts a node name from a given command and a a new node with that name to the global graph.
@@ -14,19 +15,19 @@ import static messages.Responses.RSP_NODE_ADDED;
  */
 public class AddNodeCommandExecutor extends DefaultCommandExecutor {
 
-    public AddNodeCommandExecutor(final String command) {
+    public AddNodeCommandExecutor(final Matcher command) {
         super(command);
     }
 
     @Override
     public String getResponse() {
-        final String nodeName = command.replace(CMD_ADD_NODE, "");
+        final String node = command.group(1);
         try {
-            Graph.getInstance().addNode(nodeName);
+            Graph.getInstance().addNode(node);
         } catch (final NodeAlreadyExistsException e) {
-            return RSP_ERROR_NODE_ALREADY_EXISTS;
+            return ERROR_NODE_ALREADY_EXISTS;
         }
 
-        return RSP_NODE_ADDED;
+        return NODE_ADDED;
     }
 }

@@ -4,9 +4,10 @@ import commandexecution.DefaultCommandExecutor;
 import exceptions.NodeNotFoundException;
 import graph.Graph;
 
+import java.util.regex.Matcher;
+
 import static java.lang.String.format;
-import static messages.Commands.CMD_SHORTEST_PATH;
-import static messages.Responses.RSP_ERROR_NODE_NOT_FOUND;
+import static messages.Responses.ERROR_NODE_NOT_FOUND;
 
 /**
  * Extracts two node names from the given command and find the shortest path (i.e. path with minimal total weight)
@@ -15,19 +16,21 @@ import static messages.Responses.RSP_ERROR_NODE_NOT_FOUND;
  */
 public class ShortestPathCommandExecutor extends DefaultCommandExecutor {
 
-    public ShortestPathCommandExecutor(final String command) {
+    public ShortestPathCommandExecutor(final Matcher command) {
         super(command);
     }
 
     @Override
     public String getResponse() {
-        String nodes = command.replace(CMD_SHORTEST_PATH, "");
-        String[] s = nodes.split(" ");
+
+        final String sourceNode = command.group(1);
+        final String targetNode = command.group(2);
+
         int shortestPath;
         try {
-            shortestPath = Graph.getInstance().getShortestPath(s[0], s[1]);
-        } catch (NodeNotFoundException e) {
-            return RSP_ERROR_NODE_NOT_FOUND;
+            shortestPath = Graph.getInstance().getShortestPath(sourceNode, targetNode);
+        } catch (final NodeNotFoundException e) {
+            return ERROR_NODE_NOT_FOUND;
         }
 
         return format("%d", shortestPath);

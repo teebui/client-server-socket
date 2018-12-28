@@ -4,28 +4,29 @@ import commandexecution.DefaultCommandExecutor;
 import exceptions.NodeNotFoundException;
 import graph.Graph;
 
-import static messages.Commands.CMD_REMOVE_NODE;
-import static messages.Responses.RSP_ERROR_NODE_NOT_FOUND;
-import static messages.Responses.RSP_NODE_REMOVED;
+import java.util.regex.Matcher;
+
+import static messages.Responses.ERROR_NODE_NOT_FOUND;
+import static messages.Responses.NODE_REMOVED;
 
 /**
  * Extracts a node name from the given command and remove that node from the graph.
  * Returns an error message if the node does not exist.
  */
 public class RemoveNodeCommandExecutor extends DefaultCommandExecutor {
-    public RemoveNodeCommandExecutor(final String command) {
+    public RemoveNodeCommandExecutor(final Matcher command) {
         super(command);
     }
 
     @Override
     public String getResponse() {
-        String node = command.replace(CMD_REMOVE_NODE, "");
+
         try {
-            Graph.getInstance().removeNode(node);
-        } catch (NodeNotFoundException e) {
-            return RSP_ERROR_NODE_NOT_FOUND;
+            Graph.getInstance().removeNode(command.group(1));
+        } catch (final NodeNotFoundException e) {
+            return ERROR_NODE_NOT_FOUND;
         }
 
-        return RSP_NODE_REMOVED;
+        return NODE_REMOVED;
     }
 }
