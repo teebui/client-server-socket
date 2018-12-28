@@ -1,4 +1,4 @@
-package CommandExecution;
+package commandexecution;
 
 public interface CommandExecutor {
     String getResponse();

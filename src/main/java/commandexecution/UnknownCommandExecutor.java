@@ -1,6 +1,6 @@
-package CommandExecution;
+package commandexecution;
 
-import static Messages.Responses.RSP_UNKNOWN_REQUEST;
+import static messages.Responses.RSP_UNKNOWN_REQUEST;
 
 public class UnknownCommandExecutor implements CommandExecutor {
     @Override

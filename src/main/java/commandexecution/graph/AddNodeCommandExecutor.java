@@ -1,12 +1,12 @@
-package CommandExecution.Graph;
+package commandexecution.graph;
 
-import CommandExecution.CommandExecutor;
-import Graph.Graph;
-import Graph.NodeAlreadyExistsException;
+import commandexecution.CommandExecutor;
+import graph.Graph;
+import graph.NodeAlreadyExistsException;
 
-import static Messages.Commands.CMD_ADD_NODE;
-import static Messages.Responses.RSP_ERROR_NODE_ALREADY_EXISTS;
-import static Messages.Responses.RSP_NODE_ADDED;
+import static messages.Commands.CMD_ADD_NODE;
+import static messages.Responses.RSP_ERROR_NODE_ALREADY_EXISTS;
+import static messages.Responses.RSP_NODE_ADDED;
 
 public class AddNodeCommandExecutor implements CommandExecutor {
     private String command;

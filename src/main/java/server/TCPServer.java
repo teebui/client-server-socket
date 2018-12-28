@@ -1,7 +1,7 @@
-package Server;
+package server;
 
-import ClientHandler.ClientSocketHandler;
-import Graph.Graph;
+import clienthandler.ClientSocketHandler;
+import graph.Graph;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

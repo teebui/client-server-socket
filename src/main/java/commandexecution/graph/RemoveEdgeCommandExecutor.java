@@ -1,12 +1,12 @@
-package CommandExecution.Graph;
+package commandexecution.graph;
 
-import CommandExecution.CommandExecutor;
-import Graph.Graph;
-import Graph.NodeNotFoundException;
+import commandexecution.CommandExecutor;
+import graph.Graph;
+import graph.NodeNotFoundException;
 
-import static Messages.Commands.CMD_REMOVE_EDGE;
-import static Messages.Responses.RSP_EDGE_REMOVED;
-import static Messages.Responses.RSP_ERROR_NODE_NOT_FOUND;
+import static messages.Commands.CMD_REMOVE_EDGE;
+import static messages.Responses.RSP_EDGE_REMOVED;
+import static messages.Responses.RSP_ERROR_NODE_NOT_FOUND;
 
 public class RemoveEdgeCommandExecutor implements CommandExecutor {
     private final String command;

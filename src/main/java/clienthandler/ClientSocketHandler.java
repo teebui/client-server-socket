@@ -1,7 +1,7 @@
-package ClientHandler;
+package clienthandler;
 
-import CommunicationHandler.CommunicationManager;
-import Graph.Graph;
+import communication.CommunicationManager;
+import graph.Graph;
 import org.apache.logging.log4j.LogManager;
 
 import java.io.BufferedReader;

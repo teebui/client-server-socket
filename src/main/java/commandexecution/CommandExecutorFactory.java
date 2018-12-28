@@ -1,12 +1,12 @@
-package CommandExecution;
+package commandexecution;
 
-import CommandExecution.Graph.*;
-import CommandExecution.Greetings.GoodByeCommandExecutor;
-import CommandExecution.Greetings.GreetingCommandExecutor;
-import Graph.Graph;
-import ClientHandler.Session;
+import commandexecution.graph.*;
+import commandexecution.greetings.GoodByeCommandExecutor;
+import commandexecution.greetings.GreetingCommandExecutor;
+import graph.Graph;
+import clienthandler.Session;
 
-import static Messages.Commands.*;
+import static messages.Commands.*;
 
 public class CommandExecutorFactory {
 

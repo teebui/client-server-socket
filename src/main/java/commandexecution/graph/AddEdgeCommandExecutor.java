@@ -1,12 +1,12 @@
-package CommandExecution.Graph;
+package commandexecution.graph;
 
-import CommandExecution.CommandExecutor;
-import Graph.Graph;
-import Graph.NodeNotFoundException;
+import commandexecution.CommandExecutor;
+import graph.Graph;
+import graph.NodeNotFoundException;
 
-import static Messages.Commands.CMD_ADD_EDGE;
-import static Messages.Responses.RSP_EDGE_ADDED;
-import static Messages.Responses.RSP_ERROR_NODE_NOT_FOUND;
+import static messages.Commands.CMD_ADD_EDGE;
+import static messages.Responses.RSP_EDGE_ADDED;
+import static messages.Responses.RSP_ERROR_NODE_NOT_FOUND;
 
 public class AddEdgeCommandExecutor implements CommandExecutor {
     private String command;

@@ -1,4 +1,4 @@
-package ClientHandler;
+package clienthandler;
 
 import java.util.UUID;
 

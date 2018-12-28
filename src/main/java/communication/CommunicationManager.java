@@ -1,13 +1,13 @@
-package CommunicationHandler;
+package communication;
 
-import ClientHandler.Session;
-import CommandExecution.CommandExecutorFactory;
-import Graph.Graph;
+import clienthandler.Session;
+import commandexecution.CommandExecutorFactory;
+import graph.Graph;
 
 import static java.lang.String.format;
-import static Messages.Commands.CMD_CLIENT_BYE;
-import static Messages.Responses.RSP_SERVER_BYE;
-import static Messages.Responses.RSP_SERVER_INTRO;
+import static messages.Commands.CMD_CLIENT_BYE;
+import static messages.Responses.RSP_SERVER_BYE;
+import static messages.Responses.RSP_SERVER_INTRO;
 
 
 public class CommunicationManager {
