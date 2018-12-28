@@ -84,7 +84,7 @@ public class Graph {
 
 
     /**
-     * From a given node, the BellmanFordShortestPath algorithm is used to find all reachable nodes, among which
+     * From a given node, the {@link BellmanFordShortestPath} algorithm is used to find all reachable nodes, among which
      * only those whose weight (or distance) is less than the given weight are returned.
      * Returns the list of nodes found.
      */
@@ -93,6 +93,7 @@ public class Graph {
 
         assertNodeExists(node);
 
+        // it could be interesting to see if DijkstraShortestPath might have a different result
         final SingleSourcePaths<String, DefaultWeightedEdge> paths = new BellmanFordShortestPath<>(graph).getPaths(node);
 
         return paths
