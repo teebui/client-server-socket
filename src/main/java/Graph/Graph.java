@@ -9,6 +9,10 @@ import org.jgrapht.graph.DirectedWeightedPseudograph;
 
 import java.util.stream.Collectors;
 
+/**
+ * Serves as a wrapper class for the Jgrapht library. This class performs different operations on a graph instance
+ * As a graph object is highly likely shared by different threads, every operation is thread-safe
+ */
 public class  Graph {
 
     // The DirectedWeightedPseudograph allows loops, multiple edges
@@ -18,22 +22,19 @@ public class  Graph {
         graph = new DirectedWeightedPseudograph<>(DefaultWeightedEdge.class);
     }
 
-    public synchronized void addNode(final String nodeName) throws NodeAlreadyExistsException {
-
+    public synchronized void addNode(final String nodeName) {
         if (!graph.addVertex(nodeName)) {
             throw new NodeAlreadyExistsException();
         }
     }
 
-    public synchronized void removeNode(final String nodeName) throws NodeNotFoundException {
+    public synchronized void removeNode(final String nodeName) {
         if (!graph.removeVertex(nodeName)) {
             throw new NodeNotFoundException();
         }
     }
 
-    public synchronized void addEdge(final String source, final String target, final int weight)
-            throws NodeNotFoundException {
-
+    public synchronized void addEdge(final String source, final String target, final int weight) {
         assertNodeExists(source);
         assertNodeExists(target);
 
@@ -41,8 +42,7 @@ public class  Graph {
         graph.setEdgeWeight(edge, weight);
     }
 
-    public synchronized void removeEdge(final String source, final String target) throws NodeNotFoundException {
-
+    public synchronized void removeEdge(final String source, final String target) {
         assertNodeExists(source);
         assertNodeExists(target);
 
@@ -51,35 +51,34 @@ public class  Graph {
         }
     }
 
-    public synchronized int getShortestPath(final String source, final String target) throws NodeNotFoundException {
-
+    public synchronized int getShortestPath(final String source, final String target) {
         assertNodeExists(source);
         assertNodeExists(target);
 
-        final GraphPath<String, DefaultWeightedEdge> path = new DijkstraShortestPath<>(graph).getPath(source, target);
+        final GraphPath<String, DefaultWeightedEdge> path = new BellmanFordShortestPath<>(graph).getPath(source, target);
         return path == null ? Integer.MAX_VALUE : (int) path.getWeight();
     }
 
-    public synchronized String findNodesCloserThan(final int weight, final String node)
-            throws NodeNotFoundException {
-
+    public synchronized String findNodesCloserThan(final int weight, final String node) {
         assertNodeExists(node);
 
+        // From a given node, the BellmanFordShortestPath algorithm is used to find all reachable nodes, among which
+        // only those whose weight (or distance) is less than the given weight are returned
         SingleSourcePaths<String, DefaultWeightedEdge> paths = new BellmanFordShortestPath<>(graph).getPaths(node);
 
         return paths
-                .getGraph()
-                .vertexSet()
-                .stream()
-                .filter(v -> paths.getWeight(v) < weight)
-                .filter(v -> !v.equals(node))
-                .sorted()
-                .collect(Collectors.joining(","));
+            .getGraph()
+            .vertexSet()
+            .stream()
+            .filter(v -> paths.getWeight(v) < weight)
+            .filter(v -> !v.equals(node))
+            .sorted()
+            .collect(Collectors.joining(","));
     }
 
-    private synchronized void assertNodeExists(final String node) throws NodeNotFoundException {
-
-        if (!graph.containsVertex(node))
+    private synchronized void assertNodeExists(final String node) {
+        if (!graph.containsVertex(node)) {
             throw new NodeNotFoundException();
+        }
     }
 }
