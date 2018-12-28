@@ -1,7 +1,7 @@
 package messages;
 
 /**
- * List of patterns  the recognised commands sent by clients
+ * List of patterns for the recognised commands sent by clients
  */
 public class CommandPatterns {
     private static final String VALID_NAME = "[a-zA-Z0-9-]*";
