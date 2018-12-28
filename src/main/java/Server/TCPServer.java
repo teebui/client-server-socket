@@ -11,7 +11,7 @@ import java.net.ServerSocket;
 public class TCPServer {
     private static final Logger LOGGER = LogManager.getLogger(TCPServer.class);
     private ServerSocket serverSocket;
-    private Graph graph;
+    private final Graph graph = new Graph();
 
     public void start(final int portNumber) {
 
@@ -19,7 +19,6 @@ public class TCPServer {
             serverSocket = new ServerSocket(portNumber);
             LOGGER.info(String.format("Server running on port %d...", portNumber));
 
-            graph = new Graph();
             while (true) {
                 ClientSocketHandler handler = new ClientSocketHandler(serverSocket.accept(), graph);
                 new Thread(handler).start();
