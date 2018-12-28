@@ -6,7 +6,7 @@ public class Session {
     private final UUID sessionID;
     private String clientName;
     private final long startTime;
-    private long endTime = -1;
+    private long endTime;
 
     public Session() {
         sessionID = UUID.randomUUID();
@@ -17,20 +17,8 @@ public class Session {
         return sessionID;
     }
 
-    public long getStartTime() {
-        return startTime;
-    }
-
     public void terminate() {
         endTime = System.currentTimeMillis();
-    }
-
-    public long getEndTime() {
-        return endTime;
-    }
-
-    public boolean isActive() {
-        return endTime == -1;
     }
 
     public long getDuration() {

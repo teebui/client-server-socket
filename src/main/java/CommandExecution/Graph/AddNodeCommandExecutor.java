@@ -13,14 +13,13 @@ public class AddNodeCommandExecutor implements CommandExecutor {
     private Graph graph;
 
     public AddNodeCommandExecutor(final String command, final Graph graph) {
-
         this.command = command;
         this.graph = graph;
     }
 
     @Override
     public String getResponse() {
-        String nodeName = command.replace(CMD_ADD_NODE, "");
+        final String nodeName = command.replace(CMD_ADD_NODE, "");
         try {
             graph.addNode(nodeName);
         } catch (NodeAlreadyExistsException e) {

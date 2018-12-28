@@ -26,7 +26,7 @@ public class CommunicationManager {
         this.factory = new CommandExecutorFactory(session, graph);
     }
 
-    public boolean clientSaysGoodBye(String command) {
+    public boolean clientSaysGoodBye(final String command) {
         return command.equals(CMD_CLIENT_BYE);
     }
 
@@ -39,7 +39,7 @@ public class CommunicationManager {
         return format(RSP_SERVER_BYE, session.getClientName(), session.getDuration());
     }
 
-    public String getResponse(String command) {
+    public String getResponse(final String command) {
         return factory.getExecutor(command).getResponse();
     }
 }

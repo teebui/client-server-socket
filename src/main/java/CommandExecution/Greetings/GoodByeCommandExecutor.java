@@ -11,7 +11,6 @@ public class GoodByeCommandExecutor implements CommandExecutor {
     private Session session;
 
     public GoodByeCommandExecutor(final Session session) {
-
         this.session = session;
     }
 
