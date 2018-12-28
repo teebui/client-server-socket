@@ -1,19 +1,17 @@
 package commandexecution.graph;
 
-import commandexecution.CommandExecutor;
-import graph.Graph;
+import commandexecution.DefaultCommandExecutor;
 import exceptions.NodeAlreadyExistsException;
+import graph.Graph;
 
 import static messages.Commands.CMD_ADD_NODE;
 import static messages.Responses.RSP_ERROR_NODE_ALREADY_EXISTS;
 import static messages.Responses.RSP_NODE_ADDED;
 
-public class AddNodeCommandExecutor implements CommandExecutor {
-    private String command;
-    private Graph graph;
+public class AddNodeCommandExecutor extends DefaultCommandExecutor {
 
     public AddNodeCommandExecutor(final String command) {
-        this.command = command;
+        super(command);
     }
 
     @Override

@@ -7,15 +7,13 @@ import static java.lang.String.format;
 import static messages.Commands.CMD_CLIENT_GREETING;
 import static messages.Responses.RSP_SERVER_GREETING;
 
-public class GreetingCommandExecutor implements CommandExecutor {
+public class GreetingCommandExecutor extends SessionBasedCommandExecutor implements CommandExecutor {
 
     private final String command;
-    private final Session session;
 
     public GreetingCommandExecutor(final String command, final Session session) {
-
+        super(session);
         this.command = command;
-        this.session = session;
     }
 
     @Override

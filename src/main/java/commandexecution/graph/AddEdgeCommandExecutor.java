@@ -1,6 +1,6 @@
 package commandexecution.graph;
 
-import commandexecution.CommandExecutor;
+import commandexecution.DefaultCommandExecutor;
 import graph.Graph;
 import exceptions.NodeNotFoundException;
 
@@ -8,11 +8,10 @@ import static messages.Commands.CMD_ADD_EDGE;
 import static messages.Responses.RSP_EDGE_ADDED;
 import static messages.Responses.RSP_ERROR_NODE_NOT_FOUND;
 
-public class AddEdgeCommandExecutor implements CommandExecutor {
-    private String command;
+public class AddEdgeCommandExecutor extends DefaultCommandExecutor {
 
     public AddEdgeCommandExecutor(final String command) {
-        this.command = command;
+        super(command);
     }
 
     @Override

@@ -8,7 +8,7 @@ import communication.Session;
 import static messages.Commands.*;
 
 /**
- *
+ * Analyses client commands and picks the right {@link CommandExecutor} instances to handle them
  */
 public class CommandExecutorFactory {
     public static CommandExecutor getExecutor(final String command, final Session session) {
@@ -31,6 +31,6 @@ public class CommandExecutorFactory {
             return new CloserThanCommandExecutor(command);
         }
 
-        return new UnknownCommandExecutor();
+        return new DefaultCommandExecutor();
     }
 }

@@ -1,18 +1,16 @@
 package commandexecution.graph;
 
-import commandexecution.CommandExecutor;
-import graph.Graph;
+import commandexecution.DefaultCommandExecutor;
 import exceptions.NodeNotFoundException;
+import graph.Graph;
 
 import static messages.Commands.CMD_REMOVE_NODE;
 import static messages.Responses.RSP_ERROR_NODE_NOT_FOUND;
 import static messages.Responses.RSP_NODE_REMOVED;
 
-public class RemoveNodeCommandExecutor implements CommandExecutor {
-    private final String command;
-
+public class RemoveNodeCommandExecutor extends DefaultCommandExecutor {
     public RemoveNodeCommandExecutor(final String command) {
-        this.command = command;
+        super(command);
     }
 
     @Override

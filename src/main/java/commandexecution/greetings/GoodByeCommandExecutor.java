@@ -6,12 +6,10 @@ import communication.Session;
 import static java.lang.String.format;
 import static messages.Responses.RSP_SERVER_BYE;
 
-public class GoodByeCommandExecutor implements CommandExecutor {
-
-    private Session session;
+public class GoodByeCommandExecutor extends SessionBasedCommandExecutor implements CommandExecutor {
 
     public GoodByeCommandExecutor(final Session session) {
-        this.session = session;
+        super(session);
     }
 
     @Override

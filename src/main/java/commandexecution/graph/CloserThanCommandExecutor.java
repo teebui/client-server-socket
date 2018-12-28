@@ -1,17 +1,16 @@
 package commandexecution.graph;
 
-import commandexecution.CommandExecutor;
-import graph.Graph;
+import commandexecution.DefaultCommandExecutor;
 import exceptions.NodeNotFoundException;
+import graph.Graph;
 
 import static messages.Commands.CMD_CLOSER_THAN;
 import static messages.Responses.RSP_ERROR_NODE_NOT_FOUND;
 
-public class CloserThanCommandExecutor implements CommandExecutor {
-    private final String command;
+public class CloserThanCommandExecutor extends DefaultCommandExecutor {
 
     public CloserThanCommandExecutor(final String command) {
-        this.command = command;
+        super(command);
     }
 
     @Override

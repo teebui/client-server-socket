@@ -1,18 +1,17 @@
 package commandexecution.graph;
 
-import commandexecution.CommandExecutor;
-import graph.Graph;
+import commandexecution.DefaultCommandExecutor;
 import exceptions.NodeNotFoundException;
+import graph.Graph;
 
 import static java.lang.String.format;
 import static messages.Commands.CMD_SHORTEST_PATH;
 import static messages.Responses.RSP_ERROR_NODE_NOT_FOUND;
 
-public class ShortestPathCommandExecutor implements CommandExecutor {
-    private final String command;
+public class ShortestPathCommandExecutor extends DefaultCommandExecutor {
 
     public ShortestPathCommandExecutor(final String command) {
-        this.command = command;
+        super(command);
     }
 
     @Override
