@@ -23,11 +23,9 @@ public class Graph {
     private static final Object mutex = new Object();
 
     // The DirectedWeightedPseudograph allows loops, multiple edges
-    private volatile DirectedWeightedPseudograph<String, DefaultWeightedEdge> graph;
-
-    private Graph() {
-        graph = new DirectedWeightedPseudograph<>(DefaultWeightedEdge.class);
-    }
+    // This field is purposely made protected so it's more testable
+    protected volatile DirectedWeightedPseudograph<String, DefaultWeightedEdge> graph =
+            new DirectedWeightedPseudograph<>(DefaultWeightedEdge.class);
 
     // Inspired by https://www.journaldev.com/171/thread-safety-in-java-singleton-classes-with-example-code
     public static Graph getInstance() {
