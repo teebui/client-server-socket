@@ -8,7 +8,6 @@ import static messages.Commands.CMD_CLIENT_BYE;
 import static messages.Responses.RSP_SERVER_BYE;
 import static messages.Responses.RSP_SERVER_INTRO;
 
-
 /**
  * Acts as the real boss of communication, takes the commands, tells {@link CommandExecutorFactory} to find the
  * right command executor and returns its response.
@@ -23,10 +22,9 @@ public class CommunicationManager {
     /**
      * Receives a client's command, acts accordingly and dispatches responses
      *
-     * @param graph
      */
-    public CommunicationManager(final Graph graph) {
-        this.graph = graph;
+    public CommunicationManager() {
+
         this.session = new Session();
     }
 
@@ -44,6 +42,6 @@ public class CommunicationManager {
     }
 
     public String getResponse(final String command) {
-        return CommandExecutorFactory.getExecutor(command, session, graph).getResponse();
+        return CommandExecutorFactory.getExecutor(command, session).getResponse();
     }
 }

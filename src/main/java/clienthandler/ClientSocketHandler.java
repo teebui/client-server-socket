@@ -37,9 +37,9 @@ public class ClientSocketHandler implements Runnable {
     private BufferedReader in;
     private CommunicationManager comm;
 
-    public ClientSocketHandler(final Socket clientSkt, final Graph graph) {
+    public ClientSocketHandler(final Socket clientSkt) {
         clientSocket = clientSkt;
-        comm = new CommunicationManager(graph);
+        comm = new CommunicationManager();
         initialize();
     }
 

@@ -10,11 +10,10 @@ import static messages.Responses.RSP_ERROR_NODE_NOT_FOUND;
 
 public class RemoveEdgeCommandExecutor implements CommandExecutor {
     private final String command;
-    private final Graph graph;
 
-    public RemoveEdgeCommandExecutor(final String command, final Graph graph) {
+
+    public RemoveEdgeCommandExecutor(final String command) {
         this.command = command;
-        this.graph = graph;
     }
 
     @Override
@@ -22,7 +21,7 @@ public class RemoveEdgeCommandExecutor implements CommandExecutor {
         String edge = command.replace(CMD_REMOVE_EDGE, "");
         String[] s = edge.split(" ");
         try {
-            graph.removeEdge(s[0], s[1]);
+            Graph.getInstance().removeEdge(s[0], s[1]);
         } catch (NodeNotFoundException e) {
             return RSP_ERROR_NODE_NOT_FOUND;
         }

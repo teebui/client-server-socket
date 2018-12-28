@@ -12,16 +12,15 @@ public class AddNodeCommandExecutor implements CommandExecutor {
     private String command;
     private Graph graph;
 
-    public AddNodeCommandExecutor(final String command, final Graph graph) {
+    public AddNodeCommandExecutor(final String command) {
         this.command = command;
-        this.graph = graph;
     }
 
     @Override
     public String getResponse() {
         final String nodeName = command.replace(CMD_ADD_NODE, "");
         try {
-            graph.addNode(nodeName);
+            Graph.getInstance().addNode(nodeName);
         } catch (NodeAlreadyExistsException e) {
             return RSP_ERROR_NODE_ALREADY_EXISTS;
         }

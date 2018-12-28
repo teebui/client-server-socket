@@ -1,7 +1,6 @@
 package server;
 
 import clienthandler.ClientSocketHandler;
-import graph.Graph;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,20 +10,22 @@ import java.net.ServerSocket;
 public class TCPServer {
     private static final Logger LOGGER = LogManager.getLogger(TCPServer.class);
     private ServerSocket serverSocket;
-    private final Graph graph = new Graph();
 
     public void start(final int portNumber) {
+
 
         try {
             serverSocket = new ServerSocket(portNumber);
             LOGGER.info(String.format("Server running on port %d...", portNumber));
 
             while (true) {
-                ClientSocketHandler handler = new ClientSocketHandler(serverSocket.accept(), graph);
+                ClientSocketHandler handler = new ClientSocketHandler(serverSocket.accept());
                 new Thread(handler).start();
             }
         } catch (final IOException e) {
             LOGGER.error("Error starting the TCP server", e);
+        } catch (final Exception e) {
+            LOGGER.error("Something happened", e);
         } finally {
             terminate();
         }

@@ -10,11 +10,9 @@ import static messages.Responses.RSP_ERROR_NODE_NOT_FOUND;
 
 public class ShortestPathCommandExecutor implements CommandExecutor {
     private final String command;
-    private final Graph graph;
 
-    public ShortestPathCommandExecutor(final String command, final Graph graph) {
+    public ShortestPathCommandExecutor(final String command) {
         this.command = command;
-        this.graph = graph;
     }
 
     @Override
@@ -23,7 +21,7 @@ public class ShortestPathCommandExecutor implements CommandExecutor {
         String[] s = nodes.split(" ");
         int shortestPath;
         try {
-            shortestPath = graph.getShortestPath(s[0], s[1]);
+            shortestPath = Graph.getInstance().getShortestPath(s[0], s[1]);
         } catch (NodeNotFoundException e) {
             return RSP_ERROR_NODE_NOT_FOUND;
         }

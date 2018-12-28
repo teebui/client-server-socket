@@ -5,6 +5,7 @@ import exceptions.NodeNotFoundException;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.interfaces.ShortestPathAlgorithm.SingleSourcePaths;
 import org.jgrapht.alg.shortestpath.BellmanFordShortestPath;
+import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.DirectedWeightedPseudograph;
 
@@ -13,14 +14,33 @@ import java.util.stream.Collectors;
 /**
  * Serves as a wrapper class for the Jgrapht library. This class performs different operations on a graph instance
  * As a graph object is highly likely shared by different threads, every operation is thread-safe
+ *
+ * This class is also implemented as a singleton to 1) mitigate the need for object instantiation, thus
+ * avoid chaining; and 2) guarantee better thread-safety
  */
 public class  Graph {
+    private static volatile Graph instance;
+    private static final Object mutex = new Object();
 
     // The DirectedWeightedPseudograph allows loops, multiple edges
-    private final DirectedWeightedPseudograph<String, DefaultWeightedEdge> graph;
+    private volatile DirectedWeightedPseudograph<String, DefaultWeightedEdge> graph;
 
-    public Graph() {
+    private Graph() {
         graph = new DirectedWeightedPseudograph<>(DefaultWeightedEdge.class);
+    }
+
+    // Inspired by https://www.journaldev.com/171/thread-safety-in-java-singleton-classes-with-example-code
+    public static Graph getInstance() {
+        Graph result = instance;
+        if (result == null) {
+            synchronized (mutex) {
+                result = instance;
+                if (result == null)
+                    instance = result = new Graph();
+            }
+        }
+
+        return result;
     }
 
     public synchronized void addNode(final String nodeName) {
@@ -56,7 +76,7 @@ public class  Graph {
         assertNodeExists(source);
         assertNodeExists(target);
 
-        final GraphPath<String, DefaultWeightedEdge> path = new BellmanFordShortestPath<>(graph).getPath(source, target);
+        final GraphPath<String, DefaultWeightedEdge> path = new DijkstraShortestPath<>(graph).getPath(source, target);
         return path == null ? Integer.MAX_VALUE : (int) path.getWeight();
     }
 
