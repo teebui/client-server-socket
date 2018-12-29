@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
  */
 public class Program {
     private static final int PORT_NUMBER = 50000;
-    private static final Logger LOGGER = LogManager.getLogger(TCPServer.class);
+    private static final Logger LOGGER = LogManager.getLogger(Program.class);
 
     public static void main(String[] args) {
         LOGGER.info("Starting server...");
