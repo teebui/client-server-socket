@@ -80,6 +80,20 @@ public class TCPServerTest {
         // Assert
         assertTrue(in.readLine().contains(format("BYE %s, WE SPOKE FOR", clientUUID)));
     }
+    @Test
+    public void disconnectedAfter30Seconds() throws IOException, InterruptedException {
+        // Arrange
+        in.readLine();
+        UUID clientUUID = UUID.randomUUID();
+        out.println(format("HI, I'M %s", clientUUID));
+        in.readLine();
+
+        // Act
+        Thread.sleep(30000); // sleeps like a baby, just for half a minute
+
+        // Assert
+        assertTrue(in.readLine().contains(format("BYE %s, WE SPOKE FOR", clientUUID)));
+    }
 
     @Test
     public void addNode_NodeAdded() throws IOException {
